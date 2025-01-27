@@ -3,7 +3,7 @@ import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from 'react-hot-toast';
 
-import Header from "@/components/shared/Header";
+
 import StoreProvider from "./StoreProvider";
 const roboto_mono = Roboto_Mono({
   subsets: ["latin"],
@@ -27,7 +27,7 @@ export default function RootLayout({
         className={roboto_mono.className}
       >
         <StoreProvider>
-          <Header />
+         
           {children}
           <Toaster />
         </StoreProvider>
