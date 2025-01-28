@@ -15,7 +15,7 @@ const HowToSell = () => {
                     </p>
 
                 </div>
-                <div className="grid md:grid-cols-3 gap-8 relative">
+                <div className="grid md:grid-cols-3 gap-8 relative my-8 lg:my-10">
                     <div className="hidden md:block absolute top-1/2 left-1/4 right-1/4  h-0.5 border-dashed border-gray-300 -z-10"></div>
                     {
                         sellSteps.map((step, index) => (
