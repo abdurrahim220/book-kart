@@ -232,11 +232,11 @@ const Header = () => {
 
       {/* mobile */}
 
-      <MobileHeader menuItem={MenuItems} />
+      <MobileHeader menuItem={MenuItems} user={user} />
 
 
     </header>
   )
 }
 
-export default Header
+export default Header 
