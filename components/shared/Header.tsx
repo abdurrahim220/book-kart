@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector, } from '@/lib/store/hooks/hooks'
 
 import { toggleLoginDialog } from '@/lib/store/slice/userSlice'
 import { RootState } from '@/lib/store/store'
+import MobileHeader from './mobileHeader'
 
 
 const Header = () => {
@@ -168,7 +169,7 @@ const Header = () => {
       <div className="container w-[80%] mx-auto hidden lg:flex items-center justify-between p-4">
         <Link href='/' className='flex items-center'>
           <Image src={"/images/web-logo.png"} alt='desktop logo' width={300} height={60}
-            className='  w-auto'
+            className='h-12  w-auto'
           />
         </Link>
         <div className="flex flex-1 items-center justify-center max-w-xl px-4">
@@ -217,12 +218,22 @@ const Header = () => {
 
           </DropdownMenu>
           <Link href='/checkout/cart'>
-            <Button variant={"ghost"} className='relative'>
-              <ShoppingCart className='h-5 w-5 mr-2' />Cart
-            </Button>
+            <div className="relative">
+              <Button variant={"ghost"} className='relative'>
+                <ShoppingCart className='h-5 w-5 mr-2' />Cart
+              </Button>
+              {user && (
+                <span className="absolute top-2 left-5 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full px-1 text-xs">3</span>
+              )}
+            </div>
           </Link>
         </div>
       </div>
+
+      {/* mobile */}
+
+      <MobileHeader menuItem={MenuItems} />
+
 
     </header>
   )
