@@ -1,5 +1,5 @@
 "use client";
-import ButtonLink from "@/components/shared/ButtonLink";
+import ButtonLink from "@/components/features/ButtonLink";
 import WrapperContainer from "@/components/shared/WrapperContainer";
 import { Card, CardContent } from "@/components/ui/card";
 import { books } from "@/lib/constant/bookData";
