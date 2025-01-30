@@ -1,8 +1,14 @@
-export const books = [
+import { Book } from "./interfaces";
+
+export const books: Book[] = [
   {
     _id: "1",
-    images: [],
-    availabe: 30,
+    images: [
+      "https://images.unsplash.com/photo-1492539438225-2666b2a98f93?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fG9sZCUyMCUyMGJvb2tzfGVufDB8fDB8fHww",
+      "https://media.istockphoto.com/id/910384920/photo/kid-reading-near-locked-door.webp?a=1&b=1&s=612x612&w=0&k=20&c=J3FL4ZVORItw_bkLzlVo4WO-xUy22S7Qqbuq2xusNnc=",
+      "https://images.unsplash.com/photo-1604866830893-c13cafa515d5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8b25saW5lJTIwc2VsbCUyMGJvb2tzfGVufDB8fDB8fHww",
+    ],
+    available: 30,
     title: "The Alchemist",
     category: "Reading Books (Novels)",
     condition: "Excellent",
@@ -20,12 +26,18 @@ export const books = [
       upiId: "example@upi",
     },
     createdAt: new Date("2024-01-01"),
-    seller: { name: "John Doe", contact: "1234567890" },
+
+    seller: { name: "John Doe", contact: "1234567890", location: "Dhaka" },
   },
+
   {
     _id: "2",
-    images: [],
-    availabe: 30,
+    images: [
+      "https://images.unsplash.com/photo-1492539438225-2666b2a98f93?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fG9sZCUyMCUyMGJvb2tzfGVufDB8fDB8fHww",
+      "https://media.istockphoto.com/id/910384920/photo/kid-reading-near-locked-door.webp?a=1&b=1&s=612x612&w=0&k=20&c=J3FL4ZVORItw_bkLzlVo4WO-xUy22S7Qqbuq2xusNnc=",
+      "https://images.unsplash.com/photo-1604866830893-c13cafa515d5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8b25saW5lJTIwc2VsbCUyMGJvb2tzfGVufDB8fDB8fHww",
+    ],
+    available: 30,
     title: "7 Habits of Highly Effective People",
     category: "Reading Books (Business)",
     condition: "Good",
@@ -46,12 +58,16 @@ export const books = [
       },
     },
     createdAt: new Date("2024-01-02"),
-    seller: { name: "Jane Smith", contact: "0987654321" },
+    seller: { name: "John Doe", contact: "1234567890", location: "Dhaka" },
   },
   {
     _id: "3",
-    images: [],
-    availabe: 30,
+    images: [
+      "https://images.unsplash.com/photo-1492539438225-2666b2a98f93?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fG9sZCUyMCUyMGJvb2tzfGVufDB8fDB8fHww",
+      "https://media.istockphoto.com/id/910384920/photo/kid-reading-near-locked-door.webp?a=1&b=1&s=612x612&w=0&k=20&c=J3FL4ZVORItw_bkLzlVo4WO-xUy22S7Qqbuq2xusNnc=",
+      "https://images.unsplash.com/photo-1604866830893-c13cafa515d5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8b25saW5lJTIwc2VsbCUyMGJvb2tzfGVufDB8fDB8fHww",
+    ],
+    available: 30,
     title: "Ignited Minds",
     category: "Reading Books (Motivation)",
     condition: "Fair",
@@ -68,12 +84,16 @@ export const books = [
       upiId: "kalam@upi",
     },
     createdAt: new Date("2024-01-03"),
-    seller: { name: "Rahul Gupta", contact: "1122334455" },
+    seller: { name: "John Doe", contact: "1234567890", location: "Dhaka" },
   },
   {
     _id: "4",
-    images: [],
-    availabe: 30,
+    images: [
+      "https://images.unsplash.com/photo-1492539438225-2666b2a98f93?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fG9sZCUyMCUyMGJvb2tzfGVufDB8fDB8fHww",
+      "https://media.istockphoto.com/id/910384920/photo/kid-reading-near-locked-door.webp?a=1&b=1&s=612x612&w=0&k=20&c=J3FL4ZVORItw_bkLzlVo4WO-xUy22S7Qqbuq2xusNnc=",
+      "https://images.unsplash.com/photo-1604866830893-c13cafa515d5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8b25saW5lJTIwc2VsbCUyMGJvb2tzfGVufDB8fDB8fHww",
+    ],
+    available: 30,
     title: "Introduction to Algorithms",
     category: "College Books (Higher Education Textbooks)",
     condition: "Excellent",
@@ -94,12 +114,16 @@ export const books = [
       },
     },
     createdAt: new Date("2024-01-04"),
-    seller: { name: "Alice Brown", contact: "2233445566" },
+    seller: { name: "John Doe", contact: "1234567890", location: "Dhaka" },
   },
   {
     _id: "5",
-    images: [],
-    availabe: 30,
+    images: [
+      "https://images.unsplash.com/photo-1492539438225-2666b2a98f93?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fG9sZCUyMCUyMGJvb2tzfGVufDB8fDB8fHww",
+      "https://media.istockphoto.com/id/910384920/photo/kid-reading-near-locked-door.webp?a=1&b=1&s=612x612&w=0&k=20&c=J3FL4ZVORItw_bkLzlVo4WO-xUy22S7Qqbuq2xusNnc=",
+      "https://images.unsplash.com/photo-1604866830893-c13cafa515d5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8b25saW5lJTIwc2VsbCUyMGJvb2tzfGVufDB8fDB8fHww",
+    ],
+    available: 30,
     title: "Data Structures and Algorithms Made Easy",
     category: "College Books (Higher Education Textbooks)",
     condition: "Good",
@@ -114,12 +138,16 @@ export const books = [
     paymentMode: "UPI",
     paymentDetails: { upiId: "data.structures@upi" },
     createdAt: new Date("2024-01-05"),
-    seller: { name: "Michael Johnson", contact: "3344556677" },
+    seller: { name: "John Doe", contact: "1234567890", location: "Dhaka" },
   },
   {
     _id: "6",
-    images: [],
-    availabe: 30,
+    images: [
+      "https://images.unsplash.com/photo-1492539438225-2666b2a98f93?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fG9sZCUyMCUyMGJvb2tzfGVufDB8fDB8fHww",
+      "https://media.istockphoto.com/id/910384920/photo/kid-reading-near-locked-door.webp?a=1&b=1&s=612x612&w=0&k=20&c=J3FL4ZVORItw_bkLzlVo4WO-xUy22S7Qqbuq2xusNnc=",
+      "https://images.unsplash.com/photo-1604866830893-c13cafa515d5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8b25saW5lJTIwc2VsbCUyMGJvb2tzfGVufDB8fDB8fHww",
+    ],
+    available: 30,
     title: "The Great Gatsby",
     category: "Reading Books (Novels)",
     condition: "Excellent",
@@ -140,12 +168,16 @@ export const books = [
       },
     },
     createdAt: new Date("2024-01-06"),
-    seller: { name: "Emily Davis", contact: "4455667788" },
+    seller: { name: "John Doe", contact: "1234567890", location: "Dhaka" },
   },
   {
     _id: "7",
-    images: [],
-    availabe: 30,
+    images: [
+      "https://images.unsplash.com/photo-1492539438225-2666b2a98f93?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fG9sZCUyMCUyMGJvb2tzfGVufDB8fDB8fHww",
+      "https://media.istockphoto.com/id/910384920/photo/kid-reading-near-locked-door.webp?a=1&b=1&s=612x612&w=0&k=20&c=J3FL4ZVORItw_bkLzlVo4WO-xUy22S7Qqbuq2xusNnc=",
+      "https://images.unsplash.com/photo-1604866830893-c13cafa515d5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8b25saW5lJTIwc2VsbCUyMGJvb2tzfGVufDB8fDB8fHww",
+    ],
+    available: 30,
     title: "Thinking, Fast and Slow",
     category: "Reading Books (Psychology)",
     condition: "Good",
@@ -160,12 +192,16 @@ export const books = [
     paymentMode: "UPI",
     paymentDetails: { upiId: "thinking.fast@upi" },
     createdAt: new Date("2024-01-07"),
-    seller: { name: "Sarah Wilson", contact: "5566778899" },
+    seller: { name: "John Doe", contact: "1234567890", location: "Dhaka" },
   },
   {
     _id: "8",
-    images: [],
-    availabe: 30,
+    images: [
+      "https://images.unsplash.com/photo-1492539438225-2666b2a98f93?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fG9sZCUyMCUyMGJvb2tzfGVufDB8fDB8fHww",
+      "https://media.istockphoto.com/id/910384920/photo/kid-reading-near-locked-door.webp?a=1&b=1&s=612x612&w=0&k=20&c=J3FL4ZVORItw_bkLzlVo4WO-xUy22S7Qqbuq2xusNnc=",
+      "https://images.unsplash.com/photo-1604866830893-c13cafa515d5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8b25saW5lJTIwc2VsbCUyMGJvb2tzfGVufDB8fDB8fHww",
+    ],
+    available: 30,
     title: "The Catcher in the Rye",
     category: "Reading Books (Novels)",
     condition: "Fair",
@@ -186,12 +222,16 @@ export const books = [
       },
     },
     createdAt: new Date("2024-01-08"),
-    seller: { name: "David Lee", contact: "6677889900" },
+    seller: { name: "John Doe", contact: "1234567890", location: "Dhaka" },
   },
   {
     _id: "9",
-    images: [],
-    availabe: 30,
+    images: [
+      "https://images.unsplash.com/photo-1492539438225-2666b2a98f93?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fG9sZCUyMCUyMGJvb2tzfGVufDB8fDB8fHww",
+      "https://media.istockphoto.com/id/910384920/photo/kid-reading-near-locked-door.webp?a=1&b=1&s=612x612&w=0&k=20&c=J3FL4ZVORItw_bkLzlVo4WO-xUy22S7Qqbuq2xusNnc=",
+      "https://images.unsplash.com/photo-1604866830893-c13cafa515d5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8b25saW5lJTIwc2VsbCUyMGJvb2tzfGVufDB8fDB8fHww",
+    ],
+    available: 30,
     title: "Becoming",
     category: "Reading Books (Biography)",
     condition: "Excellent",
@@ -206,12 +246,16 @@ export const books = [
     paymentMode: "UPI",
     paymentDetails: { upiId: "becoming@upi" },
     createdAt: new Date("2024-01-09"),
-    seller: { name: "Laura Green", contact: "7788990011" },
+    seller: { name: "John Doe", contact: "1234567890", location: "Dhaka" },
   },
   {
     _id: "10",
-    images: [],
-    availabe: 30,
+    images: [
+      "https://images.unsplash.com/photo-1492539438225-2666b2a98f93?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fG9sZCUyMCUyMGJvb2tzfGVufDB8fDB8fHww",
+      "https://media.istockphoto.com/id/910384920/photo/kid-reading-near-locked-door.webp?a=1&b=1&s=612x612&w=0&k=20&c=J3FL4ZVORItw_bkLzlVo4WO-xUy22S7Qqbuq2xusNnc=",
+      "https://images.unsplash.com/photo-1604866830893-c13cafa515d5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8b25saW5lJTIwc2VsbCUyMGJvb2tzfGVufDB8fDB8fHww",
+    ],
+    available: 30,
     title: "Sapiens",
     category: "Reading Books (History)",
     condition: "Good",
@@ -232,10 +276,9 @@ export const books = [
       },
     },
     createdAt: new Date("2024-01-10"),
-    seller: { name: "Chris Brown", contact: "8899001122" },
+    seller: { name: "John Doe", contact: "1234567890", location: "Dhaka" },
   },
 ];
-
 
 // export const books=[];
 export const filters = {
@@ -265,3 +308,25 @@ export const filters = {
     "5th",
   ],
 };
+
+export const bookContent = [
+  {
+    step: "Step 1",
+    title: "Seller posts an Ad",
+    description: "Seller posts an ad on book kart to sell their used books.",
+    image: { src: "/icons/ads.png", alt: "Post Ad" },
+  },
+  {
+    step: "Step 2",
+    title: "Buyer Pays Online",
+    description:
+      "Buyer makes an online payment to book kart to buy those books.",
+    image: { src: "/icons/pay_online.png", alt: "Payment" },
+  },
+  {
+    step: "Step 3",
+    title: "Seller ships the books",
+    description: "Seller then ships the books to the buyer",
+    image: { src: "/icons/fast-delivery.png", alt: "Shipping" },
+  },
+];

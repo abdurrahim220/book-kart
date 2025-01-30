@@ -30,6 +30,7 @@ import Paginate from "@/components/features/Pagination";
 import NoData from "@/components/features/NoData";
 import { useRouter } from "next/navigation";
 import BookLoader from "@/lib/constant/BookLoader";
+import Breadcrumb from "@/components/features/Breadcrumb";
 
 const Books = () => {
   // State management for filters
@@ -127,16 +128,21 @@ const Books = () => {
     return formatDistanceToNow(date, { addSuffix: true });
   };
   return (
-    <div className="min-h-screen py-16 bg-gray-100">
+    <div className="min-h-screen py-12 bg-gray-100">
       <WrapperContainer>
         <div>
-          <nav className="mb-8 flex items-center gap-2 text-sm text-muted-foreground">
-            <Link href={"/"} className="text-primary hover:underline">
-              Home
-            </Link>
-            <span>/</span>
-            <span>Books</span>
-          </nav>
+          <Breadcrumb
+            items={[
+              {
+                title: "Home",
+                href: "/",
+              },
+              {
+                title: "Books",
+              },
+            ]}
+            className="mb-6"
+          />
           <h1 className="mb-8 text-3xl font-bold">
             Find from over 1000s of used books
           </h1>
