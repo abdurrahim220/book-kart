@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector, } from '@/lib/store/hooks/hooks'
 import { toggleLoginDialog } from '@/lib/store/slice/userSlice'
 import { RootState } from '@/lib/store/store'
 import MobileHeader from './mobileHeader'
+import AuthPage from '../pages/auth/AuthPage'
 
 
 const Header = () => {
@@ -24,13 +25,15 @@ const Header = () => {
 
   const user = {
     profilePicture: '',
-    name: 'John Doe',
-    email: 'johndoe@gmail.com'
+    // name: 'John Doe',
+    name: '',
+    email: ''
+    // email: 'johndoe@gmail.com'
   }
   // const user = null
   const userPlaceholder = ""
 
-  const handleLogin = (
+  const handleLoginClick = (
 
   ) => {
     dispatch(toggleLoginDialog())
@@ -78,8 +81,13 @@ const Header = () => {
     ] : [{
       icon: <Lock className='h-5 w-5' />,
       label: "Login/Signup",
-      onClick: handleLogin
+      onClick: handleLoginClick
     }],
+    {
+      icon: <Lock className='h-5 w-5' />,
+      label: "Login/Signup",
+      onClick: handleLoginClick
+    },
     {
       icon: <User className='h-5 w-5' />,
       label: "My Profile",
@@ -234,7 +242,7 @@ const Header = () => {
 
       <MobileHeader menuItem={MenuItems} user={user} />
 
-
+<AuthPage isLoginOpen={isLoginOpen} setIsLoginOpen={handleLoginClick}/>
     </header>
   )
 }

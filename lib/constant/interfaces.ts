@@ -32,3 +32,14 @@ export type Book = {
     location:string
   };
 };
+
+
+
+export interface AuthPageProps {
+  isLoginOpen: boolean;
+  setIsLoginOpen: (open: boolean) => void;
+}
+
+export type LoginFormData = { email: string; password: string };
+export type SignupFormData = { name: string; email: string; password: string };
+export type ForgotFormData = { email: string };
