@@ -27,6 +27,9 @@ import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 
 import Paginate from "@/components/features/Pagination";
+import NoData from "@/components/features/NoData";
+import { useRouter } from "next/navigation";
+import BookLoader from "@/lib/constant/BookLoader";
 
 const Books = () => {
   // State management for filters
@@ -34,8 +37,11 @@ const Books = () => {
   const [selectedClassType, setSelectedClassType] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState("newest");
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
-  // const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const toggleFilter = (filterType: string, value: string) => {
     switch (filterType) {
@@ -104,6 +110,11 @@ const Books = () => {
           return 0;
       }
     });
+
+  const paginatedBooks = filteredAndSortedBooks.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const calculateDiscount = (price: number, finalPrice: number) => {
     return price > finalPrice
@@ -191,83 +202,104 @@ const Books = () => {
                 </Select>
               </div>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {filteredAndSortedBooks.map((book) => (
-                  <motion.div
-                    key={book._id}
-                    initial={{ opacity: 1, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <Card className="group relative overflow-hidden rounded-lg transition-shadow duration-300 hover:shadow-2xl text-white">
-                      <CardContent className="p-0">
-                        <Link href={`/books/${book._id}`}>
-                          <div className="relative">
-                            <Image
-                              src={book.images[0]}
-                              alt={book.title}
-                              width={400}
-                              height={300}
-                              className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            />
-                            <div
-                              className="absolute left-0
+                {loading ? (
+                  <BookLoader />
+                ) : filteredAndSortedBooks.length !== 0 ? (
+                  paginatedBooks.map((book) => (
+                    <motion.div
+                      key={book._id}
+                      initial={{ opacity: 1, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Card className="group relative overflow-hidden rounded-lg transition-shadow duration-300 hover:shadow-2xl text-white">
+                        <CardContent className="p-0">
+                          <Link href={`/books/${book._id}`}>
+                            <div className="relative">
+                              <Image
+                                src={book.images[0]}
+                                alt={book.title}
+                                width={400}
+                                height={300}
+                                className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                              />
+                              <div
+                                className="absolute left-0
                              top-0 z-10 flex flex-col gap-2 p-2"
-                            >
-                              {calculateDiscount(book.price, book.finalPrice) >
-                                0 && (
-                                <Badge className="bg-orange-600/90 text-white hover:bg-orange-700">
-                                  {calculateDiscount(
-                                    book.price,
-                                    book.finalPrice
-                                  )}
-                                  % Off
-                                </Badge>
-                              )}
+                              >
+                                {calculateDiscount(
+                                  book.price,
+                                  book.finalPrice
+                                ) > 0 && (
+                                  <Badge className="bg-orange-600/90 text-white hover:bg-orange-700">
+                                    {calculateDiscount(
+                                      book.price,
+                                      book.finalPrice
+                                    )}
+                                    % Off
+                                  </Badge>
+                                )}
+                              </div>
+                              <Button
+                                size={"icon"}
+                                variant={"ghost"}
+                                className="absolute right-2 top-0 h-8 w-8 rounded-full bg-white/80 backdrop-blur-sm transition-opacity duration-300 hover:bg-white group-hover:opacity-100"
+                              >
+                                <Heart className="h-6 w-6 text-red-500" />
+                              </Button>
                             </div>
-                            <Button
-                              size={"icon"}
-                              variant={"ghost"}
-                              className="absolute right-2 top-0 h-8 w-8 rounded-full bg-white/80 backdrop-blur-sm transition-opacity duration-300 hover:bg-white group-hover:opacity-100"
-                            >
-                              <Heart className="h-6 w-6 text-red-500" />
-                            </Button>
-                          </div>
-                          <div className="p-4 space-y-2">
-                            <div className="flex items-start justify-between">
-                              <h1 className="text-lg font-semibold text-orange-500 line-clamp-2">
-                                {book.title}
-                              </h1>
-                            </div>
-                            <p className="text-sm text-zinc-400">
-                              {book.author}
-                            </p>
-                            <div className="flex items-baseline gap-2">
-                              <span className="text-2xl font-bold text-black">
-                                ${book.finalPrice}
-                              </span>
-                              {book.price > book.finalPrice && (
-                                <span className="text-sm text-zinc-500 line-through">
-                                  ${book.price}
+                            <div className="p-4 space-y-2">
+                              <div className="flex items-start justify-between">
+                                <h1 className="text-lg font-semibold text-orange-500 line-clamp-2">
+                                  {book.title}
+                                </h1>
+                              </div>
+                              <p className="text-sm text-zinc-400">
+                                {book.author}
+                              </p>
+                              <div className="flex items-baseline gap-2">
+                                <span className="text-2xl font-bold text-black">
+                                  ${book.finalPrice}
                                 </span>
-                              )}
+                                {book.price > book.finalPrice && (
+                                  <span className="text-sm text-zinc-500 line-through">
+                                    ${book.price}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex items-center justify-between text-xs text-zinc-400">
+                                <span>{formDate(book.createdAt)}</span>
+                                <span>{book.condition}</span>
+                              </div>
                             </div>
-                            <div className="flex items-center justify-between text-xs text-zinc-400">
-                              <span>{formDate(book.createdAt)}</span>
-                              <span>{book.condition}</span>
+                          </Link>
+                        </CardContent>
 
-                            </div>
-                          </div>
-                        </Link>
-                      </CardContent>
-
-                      <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-orange-500/10 blur-2xl"/>
-                      <div className="absolute -bottom-8 -left-8 h-24 w-24 rounded-full bg-orange-500/10 blur-2xl"/>
-                    </Card>
-                  </motion.div>
-                ))}
+                        <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-orange-500/10 blur-2xl" />
+                        <div className="absolute -bottom-8 -left-8 h-24 w-24 rounded-full bg-orange-500/10 blur-2xl" />
+                      </Card>
+                    </motion.div>
+                  ))
+                ) : (
+                  <>
+                    <NoData
+                      imageUrl="/images/no-book.jpg"
+                      message="You haven't sold any books yet."
+                      description="Start selling your books to reach potential buyers. List your first book now and make it available to others."
+                      onClick={() => router.push("/book-sell")}
+                      buttonText="Sell Your First Book"
+                    />
+                  </>
+                )}
               </div>
-              <Paginate/>
+              <Paginate
+                totalItems={filteredAndSortedBooks.length}
+                itemsPerPage={itemsPerPage}
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
+                loading={loading}
+              />
             </div>
           </div>
         </div>
