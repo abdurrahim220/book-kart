@@ -13,6 +13,7 @@ export type IUser = {
   phoneNumber: string;
   verifyToken?: string;
   isVerified: boolean;
+  refreshToken?:string,
   passwordChangedAt?: Date;
   role: 'admin' | 'seller' | 'buyer';
   status: 'in-progress' | 'blocked' | 'active';
