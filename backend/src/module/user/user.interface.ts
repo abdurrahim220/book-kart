@@ -17,12 +17,14 @@ export type IUser = {
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
   passwordChangedAt?: Date;
-  role: 'admin' | 'seller' | 'buyer';
+  role:'super-admin' |'admin' | 'seller' | 'buyer';
   status: 'in-progress' | 'blocked' | 'active';
   agreeTerms: boolean;
   addresses: IUserAddress;
   isDeleted: boolean;
 };
 
+export type UserStatus = 'in-progress' | 'blocked' | 'active';
 
+export type UserRole = 'super-admin' | 'admin' | 'seller' | 'buyer';
 

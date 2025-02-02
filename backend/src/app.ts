@@ -1,7 +1,8 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { config } from './config';
-import cookiesParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
+
 import notFound from './middleware/notFoun';
 import globalErrorHandler from './middleware/globalErrorHandler';
 import router from './router';
@@ -14,7 +15,7 @@ app.use(
     credentials: true,
   }),
 );
-app.use(cookiesParser());
+app.use(cookieParser());
 
 app.use('/api', router);
 

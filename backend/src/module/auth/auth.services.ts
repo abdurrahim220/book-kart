@@ -132,9 +132,32 @@ const resetPassword = async ({
   await user.save();
 };
 
+
+const logout = async (req: Request) => {
+
+  const refreshToken = req.cookies?.refreshToken;
+
+  if (!refreshToken) {
+    throw new ApiError('No token provided', httpStatus.UNAUTHORIZED);
+  }
+
+  // Find user by refresh token and remove it
+  const user = await User.findOne({ refreshToken });
+
+  if (!user) {
+    throw new ApiError('Invalid token', httpStatus.UNAUTHORIZED);
+  }
+
+  // Clear refresh token from the database
+  user.refreshToken = undefined;
+  await user.save();
+};
+
+
 export const AuthServices = {
   loginUser,
   refreshAccessToken,
   forgotPassword,
   resetPassword,
+  logout,
 };

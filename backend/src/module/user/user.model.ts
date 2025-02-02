@@ -68,7 +68,7 @@ const userSchema = new Schema<IUser>(
     passwordChangedAt: { type: Date },
     role: {
       type: String,
-      enum: ['admin', 'seller', 'buyer'],
+      enum: ['admin', 'seller', 'buyer','super-admin'],
       default: 'buyer',
     },
     status: {

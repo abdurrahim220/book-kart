@@ -49,7 +49,7 @@ const refreshAccessToken = catchAsync(async (req: Request, res: Response) => {
 
 const forgotPassword = catchAsync(async (req: Request, res: Response) => {
   const { email } = req.body;
-  await AuthServices.forgotPassword({email});
+  await AuthServices.forgotPassword({ email });
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -59,9 +59,9 @@ const forgotPassword = catchAsync(async (req: Request, res: Response) => {
 });
 
 const resetPassword = catchAsync(async (req: Request, res: Response) => {
-  const { token } = req.params; // Extract token from URL
+  const { token } = req.params;
 
-  const {  password } = req.body;
+  const { password } = req.body;
   await AuthServices.resetPassword({ token, password });
 
   sendResponse(res, {
@@ -72,9 +72,29 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+
+const logout = catchAsync(async (req: Request, res: Response) => {
+  // console.log(req)
+  await AuthServices.logout(req);
+
+  // Clear cookies
+  res.setHeader('Set-Cookie', [
+    'accessToken=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0',
+    'refreshToken=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0',
+  ]);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Logout successful',
+    data: null,
+  });
+});
+
 export const AuthController = {
   loginUser,
   refreshAccessToken,
   forgotPassword,
   resetPassword,
+  logout
 };

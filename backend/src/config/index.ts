@@ -11,4 +11,9 @@ export const config = {
   email_password: process.env.EMAIL_PASSWORD,
   jWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
   jWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN,
+  super_admin_name: process.env.SUPER_ADMIN_NAME,
+  super_admin_email: process.env.SUPER_ADMIN_EMAIL,
+  super_admin_password: process.env.SUPER_ADMIN_PASSWORD,
+  super_admin_phone: process.env.SUPER_ADMIN_PHONE,
+  super_admin_profile_picture: process.env.SUPER_ADMIN_PROFILE_PICTURE,
 };
