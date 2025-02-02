@@ -7,10 +7,11 @@ import {
   IRefreshTokenPayload,
 } from './auth.interface';
 import { generateToken, verifyToken } from './auth.utils';
-
+import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import ApiError from '../../error/ApiError';
 import { config } from '../../config';
+import { sendResetPasswordLinkToEmail } from '../../utils/emailVerify';
 
 const loginUser = async (payload: ILoginPayload): Promise<ILoginResponse> => {
   const { email, password } = payload;
@@ -65,7 +66,7 @@ const refreshAccessToken = async (
 
   const user = await User.findById(decoded.userId);
   if (!user || user.refreshToken !== refreshToken) {
-    throw new ApiError('Invalid refresh token',httpStatus.FORBIDDEN);
+    throw new ApiError('Invalid refresh token', httpStatus.FORBIDDEN);
   }
 
   // Generate new access token
@@ -78,7 +79,62 @@ const refreshAccessToken = async (
   return { accessToken: newAccessToken };
 };
 
+const forgotPassword = async ({ email }: { email: string }) => {
+  // console.log('email', email);
+  const user = await User.findOne({ email });
+  // console.log('user', user);
+  if (!user) {
+    throw new ApiError('User not found', httpStatus.NOT_FOUND);
+  }
+
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  const hashedResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  const resetTokenExpires = new Date(Date.now() + 10 * 60 * 1000);
+
+  // 4. Save hashed token and expiration to user
+  user.resetPasswordToken = hashedResetToken;
+  user.resetPasswordExpires = resetTokenExpires;
+  await user.save();
+
+  // 5. Send email with raw token
+  const resetUrl = `${config.fronted_url}/reset-password/${resetToken}`;
+
+
+  await sendResetPasswordLinkToEmail(user.email, resetUrl);
+};
+
+const resetPassword = async ({
+  token,
+  password,
+}: {
+  token: string;
+  password: string;
+}) => {
+  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+  const user = await User.findOne({
+    resetPasswordToken: hashedToken,
+    resetPasswordExpires: { $gt: new Date() },
+  });
+  if (!user) {
+    throw new ApiError('Invalid or expired token', httpStatus.BAD_REQUEST);
+  }
+  user.password = password;
+
+  // 4. Remove reset token fields
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+
+  // 5. Save user
+  await user.save();
+};
+
 export const AuthServices = {
   loginUser,
   refreshAccessToken,
+  forgotPassword,
+  resetPassword,
 };

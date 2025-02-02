@@ -36,6 +36,10 @@ const userSchema = new Schema<IUser>(
     password: {
       type: String,
     },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: { type: Date },
     googleId: {
       type: String,
       unique: true,
@@ -45,8 +49,8 @@ const userSchema = new Schema<IUser>(
       type: String,
       default: null,
     },
-    refreshToken:{
-      type:String,
+    refreshToken: {
+      type: String,
     },
     profilePicture: {
       type: String,
@@ -61,7 +65,7 @@ const userSchema = new Schema<IUser>(
       type: Boolean,
       default: false,
     },
-    passwordChangedAt: Date,
+    passwordChangedAt: { type: Date },
     role: {
       type: String,
       enum: ['admin', 'seller', 'buyer'],

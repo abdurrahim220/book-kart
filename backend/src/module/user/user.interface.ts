@@ -14,6 +14,8 @@ export type IUser = {
   verifyToken?: string;
   isVerified: boolean;
   refreshToken?:string,
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
   passwordChangedAt?: Date;
   role: 'admin' | 'seller' | 'buyer';
   status: 'in-progress' | 'blocked' | 'active';
