@@ -16,4 +16,7 @@ export const config = {
   super_admin_password: process.env.SUPER_ADMIN_PASSWORD,
   super_admin_phone: process.env.SUPER_ADMIN_PHONE,
   super_admin_profile_picture: process.env.SUPER_ADMIN_PROFILE_PICTURE,
+  cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
+  cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET,
 };
