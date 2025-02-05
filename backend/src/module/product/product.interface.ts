@@ -2,12 +2,11 @@ import { Types } from 'mongoose';
 
 export type IProduct = {
   title: string;
-  image: string[];
+  images: string[];
   category: string;
   condition: string;
   classType: string;
   subject: string;
-
   author: string;
   edition: string;
   description: string;
@@ -19,4 +18,8 @@ export type IProduct = {
   reviews?: Types.ObjectId[];
   shippingCharge: number;
   seller: Types.ObjectId;
+};
+
+export type IUpdateProduct = Partial<Omit<IProduct, 'seller' | 'reviews'>> & {
+  imagesToDelete?: string[];
 };

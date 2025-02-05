@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Schema, model } from 'mongoose';
 import { IProduct } from './product.interface';
+
+import { v2 as cloudinary } from 'cloudinary';
 
 const productSchema = new Schema<IProduct>(
   {
     title: { type: String, required: [true, 'Title is required'] },
-    image: [
+    images: [
       { type: String, required: [true, 'At least one image is required'] },
     ],
     category: { type: String, required: [true, 'Category is required'] },
@@ -23,7 +26,7 @@ const productSchema = new Schema<IProduct>(
 
     finalPrice: {
       type: Number,
-     
+
       min: [0, 'Final price cannot be negative'],
     },
     stock: {
@@ -65,5 +68,50 @@ productSchema.pre('save', function (next) {
   }
   next();
 });
+
+productSchema.pre('findOneAndUpdate', async function (next) {
+  const update = this.getUpdate() as any;
+
+  if (update?.price || update?.discount) {
+    const price = update?.price || this._update.$set?.price;
+    const discount = update?.discount || this._update.$set?.discount || 0;
+
+    update.finalPrice = price - price * (discount / 100);
+    update.finalPrice = Math.round(update.finalPrice * 100) / 100;
+
+    this.setUpdate(update);
+  }
+
+  next();
+});
+
+// Add this to your product schema file
+productSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function (next) {
+    try {
+      const product = this as any;
+      
+      if (product.images?.length > 0) {
+        await Promise.all(
+          product.images.map(async (imageUrl: string) => {
+            const urlParts = imageUrl.split('/');
+            const publicId = urlParts
+              .slice(urlParts.indexOf('upload') + 1)
+              .join('/')
+              .split('.')[0];
+            
+            await cloudinary.uploader.destroy(publicId);
+          })
+        );
+      }
+      next();
+    } catch (error) {
+      console.error('Error in pre-delete hook:', error);
+      next(error as any);
+    }
+  }
+);
 
 export const Product = model<IProduct>('Product', productSchema);

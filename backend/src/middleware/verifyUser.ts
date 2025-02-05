@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -32,6 +33,7 @@ export const auth = (
         userId: string;
         role: string;
       };
+      console.log(decoded)
 
       // Find user and attach to request
       const user = await User.findById(decoded.userId);
@@ -44,7 +46,6 @@ export const auth = (
         throw new ApiError('User is not verified', httpStatus.FORBIDDEN);
       }
 
-      // Check if the user's role is in the allowedRoles array
       if (!allowedRoles.includes(user.role)) {
         throw new ApiError(
           'Forbidden: You do not have the required role',
@@ -52,7 +53,6 @@ export const auth = (
         );
       }
 
-      // Attach user to request for further use
       req.user = user;
       next();
     } catch (error) {

@@ -5,6 +5,7 @@ import { config } from '../config';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import ApiError from '../error/ApiError';
 import httpStatus from 'http-status';
+import { Request, Response, NextFunction } from 'express';
 
 // Configure Cloudinary
 cloudinary.config({
@@ -48,21 +49,21 @@ const upload = multer({
 
 // Middleware for handling multiple image uploads
 const uploadProductImages = upload.fields([
-  { name: 'image', maxCount: 5 }, // Allow up to 5 images
+  { name: 'images', maxCount: 5 }, // Allow up to 5 images
 ]);
 
 // Middleware to format cloudinary response
 const formatCloudinaryResponse = (
-  req: Express.Request,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  if (!req.files || !('image' in req.files)) {
+  if (!req.files || !('images' in req.files)) {
     return next();
   }
 
   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-  req.body.image = files['image'].map((file: any) => file.path);
+  req.body.images = files['images'].map((file: any) => file.path);
   next();
 };
 
