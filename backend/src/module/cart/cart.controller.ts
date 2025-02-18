@@ -24,24 +24,26 @@ const addToCart = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getCart = catchAsync(async (req: Request, res: Response) => {
-  const { productId, quantity } = req.body;
   const userId = req.user._id;
-  const result = await CartItem.findOne({ userId, productId });
+  const result = await CartServices.getCart(userId);
+
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
-    message: 'Product added to cart',
+    message: 'Cart retrieved successfully',
     data: result,
   });
 });
+
 const deleteFromCart = catchAsync(async (req: Request, res: Response) => {
-  const { productId, quantity } = req.body;
   const userId = req.user._id;
-  const result = await CartItem.findOne({ userId, productId });
+  const { productId } = req.params;
+  const result = await CartServices.deleteFromCart(userId, productId);
+
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
-    message: 'Product added to cart',
+    message: 'Product removed from cart',
     data: result,
   });
 });

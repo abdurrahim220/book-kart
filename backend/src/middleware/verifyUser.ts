@@ -33,7 +33,7 @@ export const auth = (
         userId: string;
         role: string;
       };
-      console.log(decoded)
+      // console.log(decoded)
 
       // Find user and attach to request
       const user = await User.findById(decoded.userId);

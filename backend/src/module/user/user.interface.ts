@@ -13,11 +13,11 @@ export type IUser = {
   phoneNumber: string;
   verifyToken?: string;
   isVerified: boolean;
-  refreshToken?:string,
+  refreshToken?: string;
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
   passwordChangedAt?: Date;
-  role:'super-admin' |'admin' | 'seller' | 'buyer';
+  role: 'super-admin' | 'admin' | 'seller' | 'buyer';
   status: 'in-progress' | 'blocked' | 'active';
   agreeTerms: boolean;
   addresses: IUserAddress;
@@ -27,4 +27,3 @@ export type IUser = {
 export type UserStatus = 'in-progress' | 'blocked' | 'active';
 
 export type UserRole = 'super-admin' | 'admin' | 'seller' | 'buyer';
-
