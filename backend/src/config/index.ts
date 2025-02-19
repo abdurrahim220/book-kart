@@ -22,4 +22,7 @@ export const config = {
   google_client_secret: process.env.GOOGLE_CLIENT_SECRET,
   google_client_id: process.env.GOOGLE_CLIENT_ID,
   google_callback_uri: process.env.GOOGLE_CALLBACK_URL,
+  RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,
+  RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
+  rAZORPAY_WEBHOOK_SECRET_KEY: process.env.RAZORPAY_WEBHOOK_SECRET_KEY,
 };
