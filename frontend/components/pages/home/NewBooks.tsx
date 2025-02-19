@@ -2,7 +2,7 @@
 import ButtonLink from "@/components/features/ButtonLink";
 import WrapperContainer from "@/components/shared/WrapperContainer";
 import { Card, CardContent } from "@/components/ui/card";
-import { books } from "@/lib/constant/bookData";
+import { books } from "@/components/constant/bookData";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

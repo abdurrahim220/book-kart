@@ -11,7 +11,7 @@ import {
   ForgotFormData,
   LoginFormData,
   SignupFormData,
-} from "@/lib/constant/interfaces";
+} from "@/components/constant/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 

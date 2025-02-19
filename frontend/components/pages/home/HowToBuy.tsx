@@ -1,5 +1,5 @@
 import WrapperContainer from '@/components/shared/WrapperContainer'
-import { buySteps } from '@/lib/constant/homeContent'
+import { buySteps } from '@/components/constant/homeContent'
 import React from 'react'
 
 const HowToBuy = () => {

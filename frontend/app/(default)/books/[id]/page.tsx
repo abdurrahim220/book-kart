@@ -4,7 +4,7 @@ import WrapperContainer from "@/components/shared/WrapperContainer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { books } from "@/lib/constant/bookData";
+import { books } from "@/components/constant/bookData";
 
 import { formatDistanceToNow } from "date-fns";
 import {
