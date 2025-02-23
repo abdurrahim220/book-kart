@@ -4,47 +4,47 @@ import storage from "redux-persist/lib/storage";
 import {
   persistStore,
   persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
 } from "redux-persist";
 import userReducer from "./slice/userSlice";
-import { api } from "./api";
-// persist configuration user
+import { authApi } from "./features/authApi";
+import { productApi } from "./features/productApi";
+import { cartApi } from "./features/cartApi";
+import { wishlistApi } from "./features/wishlistApi";
 
+// Persist Config
 const userPersistConfig = {
   key: "user",
   storage,
-  whitelist: ["user", "isEmailVerified", "isLoggedIn"],
+  whitelist: ["user", "role", "isLoggedIn"],
 };
 
-// wrap reducers with persist config
-
+// Wrap user reducer with persist config
 const persistedUserReducer = persistReducer(userPersistConfig, userReducer);
 
+// ✅ Include all reducers in the store
 export const store = configureStore({
   reducer: {
-    [api.reducerPath]: api.reducer, //rtk query api
-    user: persistedUserReducer,
+    user: persistedUserReducer, // ✅ Persisted user reducer
+    [authApi.reducerPath]: authApi.reducer, // ✅ RTK Query reducers
+    [productApi.reducerPath]: productApi.reducer,
+    [cartApi.reducerPath]: cartApi.reducer,
+    [wishlistApi.reducerPath]: wishlistApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }).concat(api.middleware),
+    getDefaultMiddleware({ serializableCheck: false }).concat([
+      authApi.middleware,
+      productApi.middleware,
+      cartApi.middleware,
+      wishlistApi.middleware,
+    ]),
 });
 
-
-// setup listeners for rtk query
+// ✅ Setup RTK Query listeners
 setupListeners(store.dispatch);
 
-// persist store
+// ✅ Persist store
 export const persistor = persistStore(store);
 
+// ✅ Correctly define RootState
 export type RootState = ReturnType<typeof store.getState>;
-
 export type AppDispatch = typeof store.dispatch;

@@ -18,15 +18,22 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import AuthForm from "./AuthForm";
 
+import toast from "react-hot-toast";
+import { toggleLoginDialog } from "@/lib/store/slice/userSlice";
+import { useAppDispatch } from "@/lib/store/hooks/hooks";
+import Image from "next/image";
+import { useForgotPasswordMutation, useLoginMutation, useRegisterMutation } from "@/lib/store/features/authApi";
+
 const AuthPage: React.FC<AuthPageProps> = ({ isLoginOpen, setIsLoginOpen }) => {
   const [currentTab, setCurrentTab] = useState<"login" | "signup" | "forgot">(
     "login"
   );
   const [loading, setLoading] = useState(false);
-  const [loginLoading, setLoginLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
-  const [signupLoading, setSignupLoading] = useState(false);
-  const [forgotPasswordSuccess, setForgotPasswordSuccess] = useState(false);
+
+  const [register] = useRegisterMutation();
+  const [login] = useLoginMutation();
+  const [forgotPassword] = useForgotPasswordMutation();
+  const dispatch = useAppDispatch();
 
   const {
     register: loginRegister,
@@ -49,20 +56,47 @@ const AuthPage: React.FC<AuthPageProps> = ({ isLoginOpen, setIsLoginOpen }) => {
   const handleLogin = async (data: LoginFormData) => {
     setLoading(true);
     // Add login logic
-    setLoading(false);
+    try {
+      const response = await login(data);
+      if (response.data?.success) {
+        toast.success("Logged in successfully");
+        dispatch(toggleLoginDialog());
+        window.location.reload()
+      }
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSignup = async (data: SignupFormData) => {
+    if (!data.agreeTerms) {
+      toast.error("You must agree to the terms and conditions");
+      return;
+    }
+    // console.log(data);
     setLoading(true);
-    // Add signup logic
-    setLoading(false);
+    try {
+      // const { email, password, name, agreeTerms } = data;
+      const response = await register(data);
+      if (response.data?.success) {
+        toast.success("Verification link sent to email");
+        dispatch(toggleLoginDialog());
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Email already registered");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleForgotPassword = async (data: ForgotFormData) => {
     setLoading(true);
     // Add forgot password logic
     setLoading(false);
-    setForgotPasswordSuccess(true);
   };
 
   return (
@@ -97,6 +131,22 @@ const AuthPage: React.FC<AuthPageProps> = ({ isLoginOpen, setIsLoginOpen }) => {
                     errors={loginErrors}
                     register={loginRegister}
                   />
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-center gap-5">
+                      <div className="w-full border"></div>
+                      <div>or</div>
+                      <div className="w-full border"></div>
+                    </div>
+                    <div className="flex items-center justify-center gap-2">
+                      <Image
+                        src={"/icons/google.png"}
+                        alt="google"
+                        height={30}
+                        width={30}
+                      />
+                      <h3>Google</h3>
+                    </div>
+                  </div>
                 </TabsContent>
                 <TabsContent value="signup" className="space-y-4">
                   <AuthForm

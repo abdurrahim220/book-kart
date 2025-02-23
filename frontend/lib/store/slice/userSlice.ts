@@ -1,21 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 type User = {
   id: string;
-  name: string;
-  email: string;
+  role: string;
 };
 
-type UserState = {
+export type UserState = {
   user: User | null;
-  isEmailVerified: boolean;
+  token: null | string;
   isLoginDialogOpen: boolean;
   isLoggedIn: boolean;
 };
 
 const initialState: UserState = {
   user: null,
-  isEmailVerified: false,
+  token: null,
   isLoginDialogOpen: false,
   isLoggedIn: false,
 };
@@ -27,13 +27,16 @@ const userSlice = createSlice({
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
-    setEmailVerified: (state, action: PayloadAction<boolean>) => {
-      state.isEmailVerified = action.payload;
-    },
+    // setRole: (state, action: PayloadAction<string>) => {
+    //   // state.user?.role = action.payload;
+    //   if (state.user) {
+    //     state.user.role = action.payload;
+    //   }
+    // },
     logout: (state) => {
       state.user = null;
       state.isLoggedIn = false;
-      state.isEmailVerified = false;
+      state.token = null;
     },
     toggleLoginDialog: (state) => {
       state.isLoginDialogOpen = !state.isLoginDialogOpen;
@@ -41,16 +44,19 @@ const userSlice = createSlice({
     authState: (state) => {
       state.isLoggedIn = true;
     },
+    setToken: (state, action: PayloadAction<string>) => {
+      state.token = action.payload;
+    },
+    updateToken: (state, action: PayloadAction<string>) => {
+      state.token = action.payload;
+    },
   },
 });
 
-export const {
-  setUser,
-  setEmailVerified,
-  logout,
-  toggleLoginDialog,
-  authState,
-} = userSlice.actions;
-
+export const { setUser, logout, toggleLoginDialog, authState, setToken,updateToken } =
+  userSlice.actions;
 
 export default userSlice.reducer;
+
+export const useCurrentToken = (state: RootState) => state.user.token;
+export const selectCurrentUser = (state: RootState) => state.user.user;

@@ -14,6 +14,16 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getUserByIdUser = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserServices.getUserByIdUser(req.user);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'User found successfully',
+    data: result,
+  });
+});
 
 const verifyEmail = catchAsync(async (req, res) => {
   const token = req.params.token;
@@ -51,6 +61,7 @@ const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
 
 export const UserController = {
   createUser,
+  getUserByIdUser,
   verifyEmail,
   updateUserRole,updateUserStatus
 };

@@ -3,20 +3,20 @@ import { Schema, model } from 'mongoose';
 import { IUser, IUserAddress } from './user.interface';
 import bcrypt from 'bcrypt';
 
-const userAddressSchema = new Schema<IUserAddress>({
-  village: {
-    type: String,
-    required: [true, 'Village is required'],
-  },
-  city: {
-    type: String,
-    required: [true, 'City is required'],
-  },
-  post: {
-    type: String,
-    required: [true, 'Post is required'],
-  },
-});
+// const userAddressSchema = new Schema<IUserAddress>({
+//   village: {
+//     type: String,
+//     required: [true, 'Village is required'],
+//   },
+//   city: {
+//     type: String,
+//     required: [true, 'City is required'],
+//   },
+//   post: {
+//     type: String,
+//     required: [true, 'Post is required'],
+//   },
+// });
 
 const userSchema = new Schema<IUser>(
   {
@@ -56,11 +56,7 @@ const userSchema = new Schema<IUser>(
       type: String,
       default: null,
     },
-    phoneNumber: {
-      type: String,
-      required: [true, 'Phone number is required'],
-      match: [/^\d{11}$/, 'Please fill a valid 10-digit phone number'],
-    },
+
     isVerified: {
       type: Boolean,
       default: false,
@@ -68,7 +64,7 @@ const userSchema = new Schema<IUser>(
     passwordChangedAt: { type: Date },
     role: {
       type: String,
-      enum: ['admin', 'seller', 'buyer','super-admin'],
+      enum: ['admin', 'seller', 'buyer', 'super-admin'],
       default: 'buyer',
     },
     status: {
@@ -84,10 +80,12 @@ const userSchema = new Schema<IUser>(
         message: 'You must agree to the terms and conditions',
       },
     },
-    addresses: {
-      type: userAddressSchema,
-      required: [true, 'Address is required'],
-    },
+    addresses: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Address',
+      },
+    ],
     isDeleted: {
       type: Boolean,
       default: false,

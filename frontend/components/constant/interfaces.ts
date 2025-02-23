@@ -41,5 +41,5 @@ export interface AuthPageProps {
 }
 
 export type LoginFormData = { email: string; password: string };
-export type SignupFormData = { name: string; email: string; password: string };
+export type SignupFormData = { name: string; email: string; password: string,agreeTerms:boolean };
 export type ForgotFormData = { email: string };

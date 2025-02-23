@@ -6,9 +6,8 @@ import { IUser, UserRole, UserStatus } from './user.interface';
 import { User } from './user.model';
 import crypto from 'crypto';
 
-
 const createUser = async (payload: IUser): Promise<IUser> => {
-  const { name, email, password, agreeTerms, addresses, phoneNumber } = payload;
+  const { name, email, password, agreeTerms } = payload;
 
   const verifyToken = crypto.randomBytes(32).toString('hex');
   const hashedToken = crypto
@@ -20,9 +19,7 @@ const createUser = async (payload: IUser): Promise<IUser> => {
     name,
     email,
     password,
-    phoneNumber,
     agreeTerms,
-    addresses,
     verifyToken: hashedToken, // Store hashed token
   });
   await sendVerificationToEmail(email, verifyToken);
@@ -30,6 +27,15 @@ const createUser = async (payload: IUser): Promise<IUser> => {
   return newUser;
 };
 
+const getUserByIdUser = async (payload: { _id: string }) => {
+  const { _id } = payload;
+  // console.log(_id)
+  const user = await User.findById(_id);
+  if (!user) {
+    throw new ApiError('User not found', httpStatus.NOT_FOUND);
+  }
+  return user;
+};
 const verifyEmail = async (token: string): Promise<void> => {
   const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
@@ -124,4 +130,5 @@ export const UserServices = {
   verifyEmail,
   updateUserRole,
   updateUserStatus,
+  getUserByIdUser,
 };

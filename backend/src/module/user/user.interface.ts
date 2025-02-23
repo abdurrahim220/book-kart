@@ -1,8 +1,5 @@
-export type IUserAddress = {
-  village: string;
-  city: string;
-  post: string;
-};
+import { Types } from "mongoose";
+
 
 export type IUser = {
   name: string;
@@ -10,7 +7,7 @@ export type IUser = {
   password?: string;
   googleId?: string;
   profilePicture: string;
-  phoneNumber: string;
+  // phoneNumber: string;
   verifyToken?: string;
   isVerified: boolean;
   refreshToken?: string;
@@ -20,7 +17,7 @@ export type IUser = {
   role: 'super-admin' | 'admin' | 'seller' | 'buyer';
   status: 'in-progress' | 'blocked' | 'active';
   agreeTerms: boolean;
-  addresses: IUserAddress;
+  addresses?: Types.ObjectId;
   isDeleted: boolean;
 };
 

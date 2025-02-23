@@ -23,7 +23,10 @@ const loginUser = async (payload: ILoginPayload): Promise<ILoginResponse> => {
   }
 
   // Verify password
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+  const isPasswordValid = await bcrypt.compare(
+    password,
+    user.password as string,
+  );
   if (!isPasswordValid) {
     throw new ApiError('Invalid credentials', httpStatus.UNAUTHORIZED);
   }
@@ -103,7 +106,6 @@ const forgotPassword = async ({ email }: { email: string }) => {
   // 5. Send email with raw token
   const resetUrl = `${config.fronted_url}/reset-password/${resetToken}`;
 
-
   await sendResetPasswordLinkToEmail(user.email, resetUrl);
 };
 
@@ -132,9 +134,7 @@ const resetPassword = async ({
   await user.save();
 };
 
-
 const logout = async (req: Request) => {
-
   const refreshToken = req.cookies?.refreshToken;
 
   if (!refreshToken) {
@@ -152,7 +152,6 @@ const logout = async (req: Request) => {
   user.refreshToken = undefined;
   await user.save();
 };
-
 
 export const AuthServices = {
   loginUser,
