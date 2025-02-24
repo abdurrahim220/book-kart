@@ -53,7 +53,7 @@ const Header = () => {
   const { data: singleUser } = useGetSingleUserQuery(null);
   const user = singleUser?.data;
 
-  console.log(singleUser);
+  // console.log(singleUser);
 
   // console.log(user);
   const handleLoginClick = () => {

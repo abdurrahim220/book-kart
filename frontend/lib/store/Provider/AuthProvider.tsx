@@ -1,27 +1,47 @@
-"use client"
-import React, { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { RootState } from "../store";
-import { useRefreshAccessTokenMutation } from "../features/authApi";
-import { logout, updateToken } from "../slice/userSlice";
+"use client";
 
-const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const dispatch = useAppDispatch();
-  const token = useAppSelector((state: RootState) => state.user.token);
-  const [refreshAccessToken] = useRefreshAccessTokenMutation();
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setUser, setToken } from "../slice/userSlice";
+import { BASE_URL } from "../features/authApi";
+import toast from "react-hot-toast";
+import BookLoader from "@/components/constant/BookLoader";
+const AuthCallback = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    if (!token) {
-      refreshAccessToken(token)
-        .unwrap()
-        .then((data) => {
-          dispatch(updateToken(data.token));
-        })
-        .catch(() => {
-          dispatch(logout());
+    const fetchUserDataAndTokens = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/user/single-user`, {
+          credentials: "include",
         });
-    }
-  }, [dispatch, token, refreshAccessToken]);
-  return children;
+        if (!response.ok) throw new Error("Failed to fetch user data");
+
+        const data = await response.json();
+
+        dispatch(setUser(data.data));
+
+        dispatch(setToken(data.refreshToken));
+
+        toast.success("Google Login Successful");
+        router.push("/dashboard");
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        toast.error("Login failed");
+        router.push("/");
+      }
+    };
+
+    fetchUserDataAndTokens();
+  }, [dispatch, router]);
+
+  return (
+    <div>
+      <BookLoader />
+    </div>
+  );
 };
 
-export default AuthProvider;
+export default AuthCallback;

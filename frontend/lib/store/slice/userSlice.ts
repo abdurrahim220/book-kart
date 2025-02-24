@@ -4,6 +4,7 @@ import { RootState } from "../store";
 type User = {
   id: string;
   role: string;
+  email: string;
 };
 
 export type UserState = {
@@ -27,12 +28,6 @@ const userSlice = createSlice({
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
-    // setRole: (state, action: PayloadAction<string>) => {
-    //   // state.user?.role = action.payload;
-    //   if (state.user) {
-    //     state.user.role = action.payload;
-    //   }
-    // },
     logout: (state) => {
       state.user = null;
       state.isLoggedIn = false;
@@ -53,8 +48,14 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, logout, toggleLoginDialog, authState, setToken,updateToken } =
-  userSlice.actions;
+export const {
+  setUser,
+  logout,
+  toggleLoginDialog,
+  authState,
+  setToken,
+  updateToken,
+} = userSlice.actions;
 
 export default userSlice.reducer;
 

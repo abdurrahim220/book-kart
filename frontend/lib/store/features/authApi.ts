@@ -1,17 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 import { setToken, setUser } from "../slice/userSlice";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+export const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 const API_URLS = {
   REGISTER: `${BASE_URL}/user/create`,
   SINGLE_USER: `${BASE_URL}/user/single-user`,
   LOGIN: `${BASE_URL}/auth/login`,
   REFRESH_TOKEN: `${BASE_URL}/auth/refresh-token`,
-  FORGOT_PASSWORD: (email: string) =>
-    `${BASE_URL}/auth/forgot-password/${email}`,
+  FORGOT_PASSWORD: `${BASE_URL}/auth/forgot-password`,
   RESET_PASSWORD: (token: string) => `${BASE_URL}/auth/reset-password/${token}`,
+  VERIFY_EMAIL: (token: string) => `${BASE_URL}/user/verify-email/${token}`,
   LOGOUT: `${BASE_URL}/auth/logout`,
 };
 
@@ -50,7 +52,8 @@ export const authApi = createApi({
           const result = await queryFulfilled;
           dispatch(setUser(result.data));
         } catch (error) {
-          console.error(error);
+          // console.error(error);
+          
         }
       },
     }),
@@ -72,7 +75,7 @@ export const authApi = createApi({
 
     forgotPassword: builder.mutation({
       query: (email) => ({
-        url: API_URLS.FORGOT_PASSWORD(email),
+        url: API_URLS.FORGOT_PASSWORD,
         method: "POST",
         body: { email },
       }),
@@ -82,6 +85,12 @@ export const authApi = createApi({
       query: (token) => ({
         url: API_URLS.RESET_PASSWORD(token),
         method: "POST",
+      }),
+    }),
+    verifyEmail: builder.mutation({
+      query: (token) => ({
+        url: API_URLS.VERIFY_EMAIL(token),
+        method: "GET",
       }),
     }),
     getSingleUser: builder.query({
@@ -105,4 +114,5 @@ export const {
   useResetPasswordMutation,
   useLogoutMutation,
   useGetSingleUserQuery,
+  useVerifyEmailMutation,
 } = authApi;

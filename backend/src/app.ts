@@ -6,7 +6,8 @@ import cookieSession from 'cookie-session'
 import notFound from './middleware/notFoun';
 import globalErrorHandler from './middleware/globalErrorHandler';
 import router from './router';
-import passport from 'passport';
+
+import passport from '../src/strategy/googleStrategy'
 const app = express();
 
 app.use(express.json());

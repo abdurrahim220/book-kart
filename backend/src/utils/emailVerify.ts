@@ -48,9 +48,9 @@ export const sendVerificationToEmail = async (to: string, token: string) => {
 
 export const sendResetPasswordLinkToEmail = async (
   to: string,
-  token: string,
+  resetUrl: string,
 ) => {
-  const resetUrl = `${config.fronted_url}/reset-password/${token}`;
+  // const resetUrl = `${config.fronted_url}/reset-password/${token}`;
   const html = `
   <h1>Welcome to BookKart! 📚</h1>
   <p>You have requested to reset your password. Please click link below to reset your password:</p>

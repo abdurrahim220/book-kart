@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import {
   Dialog,
@@ -19,10 +20,16 @@ import { useForm } from "react-hook-form";
 import AuthForm from "./AuthForm";
 
 import toast from "react-hot-toast";
-import { toggleLoginDialog } from "@/lib/store/slice/userSlice";
+import { authState, toggleLoginDialog } from "@/lib/store/slice/userSlice";
 import { useAppDispatch } from "@/lib/store/hooks/hooks";
 import Image from "next/image";
-import { useForgotPasswordMutation, useLoginMutation, useRegisterMutation } from "@/lib/store/features/authApi";
+import {
+  BASE_URL,
+  useForgotPasswordMutation,
+  useLoginMutation,
+  useRegisterMutation,
+} from "@/lib/store/features/authApi";
+import { useRouter } from "next/navigation";
 
 const AuthPage: React.FC<AuthPageProps> = ({ isLoginOpen, setIsLoginOpen }) => {
   const [currentTab, setCurrentTab] = useState<"login" | "signup" | "forgot">(
@@ -34,6 +41,8 @@ const AuthPage: React.FC<AuthPageProps> = ({ isLoginOpen, setIsLoginOpen }) => {
   const [login] = useLoginMutation();
   const [forgotPassword] = useForgotPasswordMutation();
   const dispatch = useAppDispatch();
+
+  const router = useRouter();
 
   const {
     register: loginRegister,
@@ -55,15 +64,33 @@ const AuthPage: React.FC<AuthPageProps> = ({ isLoginOpen, setIsLoginOpen }) => {
 
   const handleLogin = async (data: LoginFormData) => {
     setLoading(true);
+    
     // Add login logic
     try {
       const response = await login(data);
       if (response.data?.success) {
         toast.success("Logged in successfully");
         dispatch(toggleLoginDialog());
-        window.location.reload()
+        window.location.reload();
       }
       console.log(response);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    // Add login logic
+    try {
+      router.push(`${BASE_URL}/auth/google`);
+      dispatch(authState());
+      setTimeout(() => {
+        toast.success("Google Login Successful");
+        setIsLoginOpen(false);
+      }, 3000);
     } catch (error) {
       console.error(error);
     } finally {
@@ -95,7 +122,17 @@ const AuthPage: React.FC<AuthPageProps> = ({ isLoginOpen, setIsLoginOpen }) => {
 
   const handleForgotPassword = async (data: ForgotFormData) => {
     setLoading(true);
-    // Add forgot password logic
+    console.log(data.email)
+    try {
+      const result = await forgotPassword(data.email).unwrap();
+      
+      if (result.success) {
+        toast.success("Password reset link sent to email");
+      }
+    } catch (error) {
+      // console.error(error);
+      toast.error("Email not found");
+    }
     setLoading(false);
   };
 
@@ -138,13 +175,15 @@ const AuthPage: React.FC<AuthPageProps> = ({ isLoginOpen, setIsLoginOpen }) => {
                       <div className="w-full border"></div>
                     </div>
                     <div className="flex items-center justify-center gap-2">
-                      <Image
-                        src={"/icons/google.png"}
-                        alt="google"
-                        height={30}
-                        width={30}
-                      />
-                      <h3>Google</h3>
+                      <button onClick={handleGoogleLogin}>
+                        <Image
+                          src={"/icons/google.png"}
+                          alt="google"
+                          height={30}
+                          width={30}
+                        />
+                        <h3>Google</h3>
+                      </button>
                     </div>
                   </div>
                 </TabsContent>

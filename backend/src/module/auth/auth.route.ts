@@ -2,8 +2,6 @@ import express, { NextFunction, Request, Response } from 'express';
 import { AuthController } from './auth.controller';
 import passport from 'passport';
 import { config } from '../../config';
-import { IUser } from '../user/user.interface';
-
 import { generateToken } from '../../utils/generateToken';
 
 const router = express.Router();
@@ -43,17 +41,28 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    failureRedirect: `${config.fronted_url}/login`,
+    failureRedirect: `${config.fronted_url}`,
     session: false,
   }),
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const user = req.user as IUser;
-      const accessToken = await generateToken(user);
+      const userData = req.user as any;
+      const accessToken = generateToken(userData);
+
+      const refreshToken = generateToken(userData);
+
       res.cookie('access_token', accessToken, {
         httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      });
+
+      res.cookie('refresh_token', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
         maxAge: 30 * 24 * 60 * 60 * 1000,
       });
+
       res.redirect(`${config.fronted_url}`);
     } catch (error) {
       next(error);
