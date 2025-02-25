@@ -1,5 +1,5 @@
 "use client";
-import BookLoader from "@/components/constant/BookLoader";
+import BookLoader from "@/lib/constant/BookLoader";
 
 import { persistor, store } from "@/lib/store/store";
 

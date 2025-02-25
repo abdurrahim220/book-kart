@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { setUser, setToken } from "../slice/userSlice";
 import { BASE_URL } from "../features/authApi";
 import toast from "react-hot-toast";
-import BookLoader from "@/components/constant/BookLoader";
+import BookLoader from "@/lib/constant/BookLoader";
 const AuthCallback = () => {
   const router = useRouter();
   const dispatch = useDispatch();

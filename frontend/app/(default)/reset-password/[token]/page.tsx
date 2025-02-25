@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useResetPasswordMutation } from "@/lib/store/features/authApi";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { Eye, EyeOff } from "lucide-react"; 
+import { Eye, EyeOff } from "lucide-react";
 
 interface ResetPasswordProps {
   newPassword: string;
@@ -34,7 +34,8 @@ const ResetPassword: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
-  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
+  const toggleConfirmPasswordVisibility = () =>
+    setShowConfirmPassword(!showConfirmPassword);
 
   const onSubmit = async (data: ResetPasswordProps) => {
     setLoading(true);
@@ -78,7 +79,9 @@ const ResetPassword: React.FC = () => {
             </label>
             <div className="relative">
               <input
-                {...register("newPassword", { required: "Password is required" })}
+                {...register("newPassword", {
+                  required: "Password is required",
+                })}
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter new password"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 pr-10"
@@ -92,7 +95,9 @@ const ResetPassword: React.FC = () => {
               </button>
             </div>
             {errors.newPassword && (
-              <p className="text-red-500 text-sm">{errors.newPassword.message}</p>
+              <p className="text-red-500 text-sm">
+                {errors.newPassword.message}
+              </p>
             )}
           </div>
 
@@ -103,7 +108,9 @@ const ResetPassword: React.FC = () => {
             </label>
             <div className="relative">
               <input
-                {...register("confirmPassword", { required: "Please confirm your password" })}
+                {...register("confirmPassword", {
+                  required: "Please confirm your password",
+                })}
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm new password"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 pr-10"
@@ -117,7 +124,9 @@ const ResetPassword: React.FC = () => {
               </button>
             </div>
             {errors.confirmPassword && (
-              <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>
+              <p className="text-red-500 text-sm">
+                {errors.confirmPassword.message}
+              </p>
             )}
           </div>
 

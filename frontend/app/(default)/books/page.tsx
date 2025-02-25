@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
-import { books, filters } from "@/components/constant/bookData";
+import { books, filters } from "@/lib/constant/bookData";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -29,7 +29,7 @@ import { Heart } from "lucide-react";
 import Paginate from "@/components/features/Pagination";
 import NoData from "@/components/features/NoData";
 import { useRouter } from "next/navigation";
-import BookLoader from "@/components/constant/BookLoader";
+import BookLoader from "@/lib/constant/BookLoader";
 import Breadcrumb from "@/components/features/Breadcrumb";
 
 const Books = () => {

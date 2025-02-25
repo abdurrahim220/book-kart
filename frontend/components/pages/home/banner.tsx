@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { bannerImages } from '@/components/constant/homeContent'
+import { bannerImages } from '@/lib/constant/homeContent'
 import { NotebookIcon, ShoppingBag } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'

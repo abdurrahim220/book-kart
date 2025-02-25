@@ -1,7 +1,7 @@
 import WrapperContainer from '@/components/shared/WrapperContainer'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { blogPosts } from '@/components/constant/homeContent'
+import { blogPosts } from '@/lib/constant/homeContent'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'

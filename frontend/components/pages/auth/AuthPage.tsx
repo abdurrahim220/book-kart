@@ -12,7 +12,7 @@ import {
   ForgotFormData,
   LoginFormData,
   SignupFormData,
-} from "@/components/constant/interfaces";
+} from "@/lib/constant/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 
