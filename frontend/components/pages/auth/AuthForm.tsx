@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import { SubmitHandler } from "react-hook-form";
 import { useState } from "react";
-import { fields } from "@/lib/constant/auth_constant";
+import { fields } from "@/lib/constant/form_constant";
 
 type AuthType = "login" | "signup" | "forgot" | "resetPassword";
 

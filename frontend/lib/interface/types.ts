@@ -31,15 +31,15 @@ export type IOrder = {
   paymentMethod: string;
   paymentStatus: "pending" | "success" | "failed";
   totalAmount: number;
-  paymentDetails: {
-    razorpay_order_id?: string;
-    razorpay_payment_id?: string;
-    razorpay_signature?: string;
-  };
+  // paymentDetails: {
+  //   razorpay_order_id?: string;
+  //   razorpay_payment_id?: string;
+  //   razorpay_signature?: string;
+  // };
   productStatus: "processing" | "shipped" | "delivered" | "cancelled";
 };
 
-export type IProduct = {
+export type BookDetails = {
   title: string;
   images: string[];
   category: string;
