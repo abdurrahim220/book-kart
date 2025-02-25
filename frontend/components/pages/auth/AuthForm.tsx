@@ -7,7 +7,7 @@ import { SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { fields } from "@/components/constant/auth_constant";
 
-type AuthType = "login" | "signup" | "forgot";
+type AuthType = "login" | "signup" | "forgot" | "resetPassword";
 
 interface AuthFormProps {
   type: AuthType;

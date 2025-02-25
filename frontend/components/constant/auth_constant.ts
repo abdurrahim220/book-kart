@@ -54,4 +54,20 @@ export const fields = {
       icon: Mail,
     },
   ],
+  resetPassword: [
+    {
+      name: "password",
+      label: "Password",
+      type: "password",
+      required: true,
+      icon: LockKeyhole,
+    },
+    {
+      name: "passwordConfirm",
+      label: "Confirm Password",
+      type: "password",
+      required: true,
+      icon: LockKeyhole,
+    },
+  ],
 };

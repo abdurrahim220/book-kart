@@ -21,6 +21,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
+    headers.set("Content-Type", "application/json");
     const token = (getState() as RootState).user.token;
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
@@ -53,7 +54,6 @@ export const authApi = createApi({
           dispatch(setUser(result.data));
         } catch (error) {
           // console.error(error);
-          
         }
       },
     }),
@@ -82,9 +82,10 @@ export const authApi = createApi({
     }),
 
     resetPassword: builder.mutation({
-      query: (token) => ({
+      query: ({ token, password }) => ({
         url: API_URLS.RESET_PASSWORD(token),
         method: "POST",
+        body: JSON.stringify({ password }),
       }),
     }),
     verifyEmail: builder.mutation({
