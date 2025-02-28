@@ -72,77 +72,93 @@ export const fields = {
   ],
 };
 
+// lib/formFields.ts
 export const bookFormFields = {
-  book: [
+  bookDetails: [
     {
       name: "title",
-      label: "Title",
+      label: "Ad Title",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "category",
+      label: "Book Type",
+      type: "select",
+      options: [
+        "College Books (Higher Education Textbooks)",
+        "Exam/Test Preparation Books",
+        "Reading Books (Novels, Children, Business, Literature, History, etc.)",
+        "School Books (up to 12th)",
+      ],
+      required: true,
+    },
+    {
+      name: "condition",
+      label: "Book Condition",
+      type: "radio",
+      options: ["Excellent", "Good", "Fair"],
+      required: true,
+    },
+    {
+      name: "classType",
+      label: "For Class",
+      type: "select",
+      options: [
+        "Playgroup", "Nursery", "KG", "Class 1", "Class 2", "Class 3", "Class 4", "Class 5",
+        "Class 6", "Class 7", "Class 8", "Class 9", "Class 10 (SSC/Dakhil)",
+        "Class 11", "Class 12 (HSC/Alim)",
+        "Diploma in Engineering", "Diploma in Medical Technology", "Diploma in Nursing",
+        "Diploma in Agriculture", "Diploma in Textile Engineering",
+        "BA", "BSS", "BSc", "BCom", "BBA", "LLB", "BPharm", "MBBS", "BSc in Engineering",
+        "MA", "MSS", "MSc", "MCom", "MBA", "LLM", "MPharm", "MSc in Engineering",
+        "MPhil", "PhD",
+      ],
+      required: true,
+    },
+    {
+      name: "subject",
+      label: "Book Title/Subject",
       type: "text",
       required: true,
     },
     {
       name: "images",
-      label: "Images",
+      label: "Upload Photos",
       type: "file",
       required: true,
     },
-    {
-      name: "description",
-      label: "Description",
-      type: "text",
-      required: true,
-    },
+  ],
+  optionalDetails: [
     {
       name: "price",
-      label: "Price",
+      label: "MRP",
       type: "number",
-      required: true,
-    },
-    {
-      name: "category",
-      label: "Category",
-      type: "text",
-      required: true,
-    },
-    {
-      name: "condition",
-      label: "Condition",
-      type: "text",
-      required: true,
-    },
-    {
-      name: "classType",
-      label: "Class Type",
-      type: "text",
-      required: true,
-    },
-    {
-      name: "subject",
-      label: "Subject",
-      type: "text",
-      required: true,
+      required: false,
     },
     {
       name: "author",
       label: "Author",
       type: "text",
-      required: true,
-    },
-    {
-      name: "edition",
-      label: "Edition",
-      type: "text",
-      required: true,
-    },
-    {
-      name: "discount",
-      label: "Discount",
-      type: "number",
       required: false,
     },
     {
-      name: "finalPrice",
-      label: "Final Price",
+      name: "edition",
+      label: "Edition (Year)",
+      type: "text",
+      required: false,
+    },
+    {
+      name: "description",
+      label: "Ad Description",
+      type: "textarea",
+      required: false,
+    },
+  ],
+  pricingDetails: [
+    {
+      name: "discount",
+      label: "Discount (%)",
       type: "number",
       required: true,
     },
@@ -153,28 +169,10 @@ export const bookFormFields = {
       required: true,
     },
     {
-      name: "rating",
-      label: "Rating",
-      type: "number",
-      required: false,
-    },
-    {
-      name: "reviews",
-      label: "Reviews",
-      type: "text",
-      required: false,
-    },
-    {
       name: "shippingCharge",
-      label: "Shipping Charge",
+      label: "Enter shipping charges",
       type: "number",
-      required: true,
-    },
-    {
-      name: "seller",
-      label: "Seller",
-      type: "text",
-      required: true,
+      required: false,
     },
   ],
 };

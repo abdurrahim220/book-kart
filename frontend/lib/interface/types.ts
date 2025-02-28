@@ -41,7 +41,7 @@ export type IOrder = {
 
 export type BookDetails = {
   title: string;
-  images: string[];
+  images: (File | string)[];
   category: string;
   condition: string;
   classType: string;
@@ -51,11 +51,10 @@ export type BookDetails = {
   description: string;
   price: number;
   discount: number;
-  finalPrice: number;
   stock: number;
   rating?: number;
   reviews?: ObjectId[];
-  shippingCharge: number;
+  shippingCharge: string;
   seller: ObjectId;
 };
 
