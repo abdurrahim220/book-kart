@@ -1,6 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQueryWithErrorHandling } from "../hooks/baseQueryWithErrorHandling";
+import { BASE_URL } from "./authApi";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 const API_URLS = {
   ADD_TO_CART: `${BASE_URL}/cart/`,
@@ -10,7 +11,7 @@ const API_URLS = {
 
 export const cartApi = createApi({
   reducerPath: "cartApi",
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: baseQueryWithErrorHandling,
   endpoints: (builder) => ({
     addToCart: builder.mutation({
       query: (productData) => ({
@@ -33,4 +34,8 @@ export const cartApi = createApi({
   }),
 });
 
-export const { useAddToCartMutation, useRemoveFromCartMutation, useGetCartQuery } = cartApi;
+export const {
+  useAddToCartMutation,
+  useRemoveFromCartMutation,
+  useGetCartQuery,
+} = cartApi;

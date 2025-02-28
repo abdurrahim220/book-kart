@@ -20,6 +20,14 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import HowItWorksSection from "@/components/shared/HowItWorksSection";
+import { useAddToCartMutation } from "@/lib/store/features/cartApi";
+import {
+  useAddToWishlistMutation,
+  useRemoveFromWishlistMutation,
+} from "@/lib/store/features/wishlistApi";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks/hooks";
+import toast from "react-hot-toast";
+import { addToCart } from "@/lib/store/slice/cartSlice";
 
 const SingleBook = () => {
   const { id } = useParams();
@@ -27,38 +35,32 @@ const SingleBook = () => {
   const [books, setBooks] = useState<BookDetails | null>(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [isAddToCart, setIsAddToCart] = useState(false);
+  const { data, isLoading } = useGetProductByIdQuery(id);
+  const { isLoggedIn, token } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
 
-  const { data, isLoading, error } = useGetProductByIdQuery(id);
+  const [addToCartMutation] = useAddToCartMutation();
+  const [addToWishListMutation] = useAddToWishlistMutation();
+  const [removeWishListMutation] = useRemoveFromWishlistMutation();
 
-  console.log("Raw API data:", data);
-  console.log("Error:", error);
+  const wishList = useAppSelector((state) => state.wishlist.items);
 
-  // Set books based on API data
   useEffect(() => {
     if (data) {
-      // Assuming transformResponse returns the product object directly
       setBooks(data.data);
     }
   }, [data]);
-
-  // Loading and error states
-  if (isLoading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-  // if (isError) {
-  //   return (
-  //     <WrapperContainer>
-  //       <div className="min-h-screen flex items-center justify-center">
-  //         <h1 className="text-2xl font-bold">
-  //           Error: {error?.status} - {error?.data?.message || "Failed to load book"}
-  //         </h1>
-  //       </div>
-  //     </WrapperContainer>
-  //   );
-  // }
+  if (isLoading)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
 
   const singleBook = books;
 
-  console.log("singleBook:", singleBook);
-  console.log("books:", books);
+  // console.log("singleBook:", singleBook);
+  // console.log("books:", books);
 
   // Early return if no book data
   if (!singleBook) {
@@ -72,25 +74,54 @@ const SingleBook = () => {
   }
 
   // Placeholder functions
-  const handleAddToCart = (productId: string) => {
-    setIsAddToCart(true);
-    setTimeout(() => setIsAddToCart(false), 2000); // Simulate async action
+  const handleAddToCart = async () => {
+
+    console.log(token)
+
+    if (books) {
+      setIsAddToCart(true);
+
+      // console.log(books)
+
+      try {
+        const result = await addToCartMutation({
+          productId: books._id,
+          quantity: 1,
+        }).unwrap();
+        console.log(result)
+        if (result.success && result.data) {
+          dispatch(addToCart(result.data));
+
+          toast.success(`${books.title} added to cart`);
+        } else {
+          toast.error(result.message);
+        }
+      } catch (error) {
+        const errorMessage = error as { message: string };
+        toast.error(errorMessage.message);
+      }
+      setIsAddToCart(false);
+    }
   };
   const handleAddToWishlist = (productId: string) => {
     console.log(`Added ${productId} to wishlist`);
   };
 
-  const bookImages = singleBook.images || [];
+  const bookImages = (singleBook.images || []).filter(
+    (image): image is string => typeof image === "string"
+  );
 
   // Calculate discount percentage
   const calculateDiscount = (price?: number, finalPrice?: number) => {
-    if (price === undefined || finalPrice === undefined || price <= finalPrice) {
+    if (
+      price === undefined ||
+      finalPrice === undefined ||
+      price <= finalPrice
+    ) {
       return 0;
     }
     return Math.round(((price - finalPrice) / price) * 100);
   };
-
-  
 
   const formDate = (dateString: string | Date) => {
     const date = new Date(dateString);
@@ -114,14 +145,20 @@ const SingleBook = () => {
           <div className="space-y-4">
             <div className="relative h-96 overflow-hidden rounded-lg border bg-white shadow-md">
               <Image
-                src={bookImages[selectedImage] || "/placeholder-image.jpg"}
+                src={
+                  typeof bookImages[selectedImage] === "string"
+                    ? bookImages[selectedImage]
+                    : "/placeholder-image.jpg"
+                }
                 alt={singleBook.title || "Book Image"}
                 fill
                 className="object-cover"
               />
-              {calculateDiscount(singleBook.price, singleBook.finalPrice) > 0 && (
+              {calculateDiscount(singleBook.price, singleBook.finalPrice) >
+                0 && (
                 <span className="absolute left-0 top-2 rounded-r-lg bg-red-500 px-2 py-1 text-xs font-medium text-white">
-                  {calculateDiscount(singleBook.price, singleBook.finalPrice)}% off
+                  {calculateDiscount(singleBook.price, singleBook.finalPrice)}%
+                  off
                 </span>
               )}
             </div>
@@ -160,7 +197,9 @@ const SingleBook = () => {
                 <Button variant="outline">Share</Button>
                 <Button
                   variant="outline"
-                  onClick={() => handleAddToWishlist(singleBook._id)}
+                  onClick={() =>
+                    singleBook._id && handleAddToWishlist(singleBook._id)
+                  }
                 >
                   <Heart className="h-4 w-4 mr-1 fill-red-500" />
                   <span className="hidden md:inline">Add</span>
@@ -169,8 +208,10 @@ const SingleBook = () => {
             </div>
 
             <div className="flex items-baseline gap-2">
-              <span className="text-lg font-bold">${singleBook.finalPrice}</span>
-              {singleBook.price > singleBook.finalPrice && (
+              <span className="text-lg font-bold">
+                ${singleBook.finalPrice}
+              </span>
+              {singleBook.price > (singleBook.finalPrice ?? 0) && (
                 <span className="text-sm text-muted-foreground line-through">
                   ${singleBook.price}
                 </span>
@@ -182,7 +223,7 @@ const SingleBook = () => {
 
             <Button
               className="w-60 bg-blue-700"
-              onClick={() => handleAddToCart(singleBook._id)}
+              onClick={() => handleAddToCart()}
               disabled={isAddToCart}
             >
               {isAddToCart ? (
@@ -204,17 +245,29 @@ const SingleBook = () => {
               </CardHeader>
               <CardContent className="grid gap-4">
                 <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div className="font-medium text-muted-foreground">Subject/Title</div>
+                  <div className="font-medium text-muted-foreground">
+                    Subject/Title
+                  </div>
                   <div>{singleBook.subject}</div>
-                  <div className="font-medium text-muted-foreground">Course</div>
+                  <div className="font-medium text-muted-foreground">
+                    Course
+                  </div>
                   <div>{singleBook.classType}</div>
-                  <div className="font-medium text-muted-foreground">Category</div>
+                  <div className="font-medium text-muted-foreground">
+                    Category
+                  </div>
                   <div>{singleBook.category}</div>
-                  <div className="font-medium text-muted-foreground">Author</div>
+                  <div className="font-medium text-muted-foreground">
+                    Author
+                  </div>
                   <div>{singleBook.author}</div>
-                  <div className="font-medium text-muted-foreground">Edition</div>
+                  <div className="font-medium text-muted-foreground">
+                    Edition
+                  </div>
                   <div>{singleBook.edition}</div>
-                  <div className="font-medium text-muted-foreground">Condition</div>
+                  <div className="font-medium text-muted-foreground">
+                    Condition
+                  </div>
                   <div>{singleBook.condition}</div>
                 </div>
               </CardContent>
@@ -233,8 +286,9 @@ const SingleBook = () => {
               <div className="border-t pt-4">
                 <h3 className="font-medium mb-2">Our Community</h3>
                 <p className="text-muted-foreground">
-                  We&apos;re not just a marketplace, we&apos;re a community of book lovers. Our
-                  members are passionate about reading and sharing.
+                  We&apos;re not just a marketplace, we&apos;re a community of
+                  book lovers. Our members are passionate about reading and
+                  sharing.
                 </p>
               </div>
             </CardContent>
@@ -251,7 +305,9 @@ const SingleBook = () => {
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-center gap-3">
-                    <span className="font-medium">{singleBook.seller.name}</span>
+                    <span className="font-medium">
+                      {singleBook.seller.name}
+                    </span>
                     <Badge variant="outline" className="text-green-500">
                       <CheckCircle2 className="h-3 w-3 mr-1" />
                       Verified
@@ -259,7 +315,9 @@ const SingleBook = () => {
                   </div>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <MapPin className="h-4 w-4" />
-                    <span>{singleBook.seller.location || "Location not provided"}</span>
+                    <span>
+                      {singleBook.seller.location || "Location not provided"}
+                    </span>
                   </div>
                 </div>
               </div>

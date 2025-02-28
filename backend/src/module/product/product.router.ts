@@ -24,16 +24,8 @@ router.patch(
 
 router.get('/', ProductController.getAllProducts);
 
-router.get(
-  '/single-product/:productId',
-  auth('admin', 'seller', 'buyer'),
-  ProductController.getSingleProducts,
-);
-router.get(
-  '/seller-product/:sellerId',
-  auth('seller', 'admin', 'buyer'),
-  ProductController.getSellerProducts,
-);
+router.get('/single-product/:productId', ProductController.getSingleProducts);
+router.get('/seller-product/:sellerId', ProductController.getSellerProducts);
 
 router.delete(
   '/:productId',

@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 import AuthForm from "./AuthForm";
 
 import toast from "react-hot-toast";
-import { authState, toggleLoginDialog } from "@/lib/store/slice/userSlice";
+import { authState, setToken, toggleLoginDialog } from "@/lib/store/slice/userSlice";
 import { useAppDispatch } from "@/lib/store/hooks/hooks";
 import Image from "next/image";
 import {
@@ -70,6 +70,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ isLoginOpen, setIsLoginOpen }) => {
       const response = await login(data);
       if (response.data?.success) {
         toast.success("Logged in successfully");
+        // dispatch(setToken(response.data.data.accessToken));
         dispatch(toggleLoginDialog());
         window.location.reload();
       }

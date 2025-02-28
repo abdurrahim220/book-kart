@@ -4,7 +4,12 @@ import { auth } from '../../middleware/verifyUser';
 
 const router = Router();
 
-router.post('/', auth('buyer', 'seller', 'admin'), CartController.addToCart);
+router.post(
+  '/',
+ auth('buyer', 'seller', 'admin'),
+
+  CartController.addToCart,
+);
 router.get('/', auth('buyer', 'seller', 'admin'), CartController.getCart);
 router.delete(
   '/:id',

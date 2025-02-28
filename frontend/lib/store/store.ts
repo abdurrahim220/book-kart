@@ -22,7 +22,7 @@ import { wishlistApi } from "./features/wishlistApi";
 const userPersistConfig = {
   key: "user",
   storage,
-  whitelist: ["user", "role", "isLoggedIn"],
+  whitelist: ["user", "role", "isLoggedIn", "token"],
 };
 
 const cartPersistConfig = {

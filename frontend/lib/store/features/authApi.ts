@@ -1,3 +1,4 @@
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
@@ -51,7 +52,8 @@ export const authApi = createApi({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const result = await queryFulfilled;
-          dispatch(setUser(result.data));
+          dispatch(setUser(result.data.data));
+          dispatch(setToken(result.data.data.accessToken));
         } catch (error) {
           // console.error(error);
         }
