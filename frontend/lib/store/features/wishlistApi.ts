@@ -1,16 +1,18 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQueryWithErrorHandling } from "../hooks/baseQueryWithErrorHandling";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 const API_URLS = {
   ADD_TO_WISHLIST: `${BASE_URL}/wish-list/add`,
   GET_WISHLIST: `${BASE_URL}/wish-list/`,
-  DELETE_FROM_WISHLIST: (productId: string) => `${BASE_URL}/wish-list/${productId}`,
+  DELETE_FROM_WISHLIST: (productId: string) =>
+    `${BASE_URL}/wish-list/${productId}`,
 };
 
 export const wishlistApi = createApi({
   reducerPath: "wishlistApi",
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: baseQueryWithErrorHandling,
   endpoints: (builder) => ({
     addToWishlist: builder.mutation({
       query: (productData) => ({
@@ -33,4 +35,8 @@ export const wishlistApi = createApi({
   }),
 });
 
-export const { useAddToWishlistMutation, useRemoveFromWishlistMutation, useGetWishlistQuery } = wishlistApi;
+export const {
+  useAddToWishlistMutation,
+  useRemoveFromWishlistMutation,
+  useGetWishlistQuery,
+} = wishlistApi;

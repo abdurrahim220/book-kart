@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import Breadcrumb from "@/components/features/Breadcrumb";
 import WrapperContainer from "@/components/shared/WrapperContainer";
@@ -27,7 +28,7 @@ import {
 } from "@/lib/store/features/wishlistApi";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks/hooks";
 import toast from "react-hot-toast";
-import { addToCart } from "@/lib/store/slice/cartSlice";
+import { addToCart } from "@/lib/store/slice/cartSlicer";
 
 const SingleBook = () => {
   const { id } = useParams();
@@ -75,8 +76,7 @@ const SingleBook = () => {
 
   // Placeholder functions
   const handleAddToCart = async () => {
-
-    console.log(token)
+    console.log(token);
 
     if (books) {
       setIsAddToCart(true);
@@ -88,7 +88,7 @@ const SingleBook = () => {
           productId: books._id,
           quantity: 1,
         }).unwrap();
-        console.log(result)
+        console.log(result);
         if (result.success && result.data) {
           dispatch(addToCart(result.data));
 
@@ -104,7 +104,11 @@ const SingleBook = () => {
     }
   };
   const handleAddToWishlist = (productId: string) => {
-    console.log(`Added ${productId} to wishlist`);
+    try {
+      
+    } catch (error) {
+      
+    }
   };
 
   const bookImages = (singleBook.images || []).filter(

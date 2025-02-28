@@ -28,7 +28,7 @@ const userSlice = createSlice({
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
-    logout: (state) => {
+    logOut: (state) => {
       state.user = null;
       state.isLoggedIn = false;
       state.token = null;
@@ -50,7 +50,7 @@ const userSlice = createSlice({
 
 export const {
   setUser,
-  logout,
+  logOut,
   toggleLoginDialog,
   authState,
   setToken,

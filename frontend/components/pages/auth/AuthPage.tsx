@@ -20,7 +20,10 @@ import { useForm } from "react-hook-form";
 import AuthForm from "./AuthForm";
 
 import toast from "react-hot-toast";
-import { authState, setToken, toggleLoginDialog } from "@/lib/store/slice/userSlice";
+import {
+  authState,
+  toggleLoginDialog,
+} from "@/lib/store/slice/userSlice";
 import { useAppDispatch } from "@/lib/store/hooks/hooks";
 import Image from "next/image";
 import {
@@ -64,15 +67,23 @@ const AuthPage: React.FC<AuthPageProps> = ({ isLoginOpen, setIsLoginOpen }) => {
 
   const handleLogin = async (data: LoginFormData) => {
     setLoading(true);
-    
+
     // Add login logic
     try {
       const response = await login(data);
+      console.log(response);
       if (response.data?.success) {
-        toast.success("Logged in successfully");
+        toast.success(`${response.data.message}` || "Logged in successfully");
         // dispatch(setToken(response.data.data.accessToken));
         dispatch(toggleLoginDialog());
         window.location.reload();
+      } else {
+        if (response.error && 'data' in response.error) {
+          const errorMessage = (response.error as { data: { message: string } }).data.message ?? "Invalid Credentials";
+          toast.error(errorMessage);
+        } else {
+          toast.error("Invalid Credentials");
+        }
       }
       console.log(response);
     } catch (error) {
@@ -123,10 +134,10 @@ const AuthPage: React.FC<AuthPageProps> = ({ isLoginOpen, setIsLoginOpen }) => {
 
   const handleForgotPassword = async (data: ForgotFormData) => {
     setLoading(true);
-    console.log(data.email)
+    console.log(data.email);
     try {
       const result = await forgotPassword(data.email).unwrap();
-      
+
       if (result.success) {
         toast.success("Password reset link sent to email");
       }

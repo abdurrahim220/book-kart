@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,7 +29,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks/hooks";
 
-import { logout, toggleLoginDialog } from "@/lib/store/slice/userSlice";
+import {  logOut, toggleLoginDialog } from "@/lib/store/slice/userSlice";
 import { RootState } from "@/lib/store/store";
 import MobileHeader from "./mobileHeader";
 import AuthPage from "../pages/auth/AuthPage";
@@ -46,7 +47,7 @@ const Header = () => {
   const isLoginOpen = useAppSelector(
     (state: RootState) => state.user.isLoginDialogOpen
   );
-  const [logoutH] = useLogoutMutation();
+  const [logout] = useLogoutMutation();
   const userPlaceholder = "";
   // const user = useAppDispatch((state: RootState) => state.user.user);
 
@@ -73,13 +74,13 @@ const Header = () => {
   };
   const handleLogout = async () => {
     try {
-      await logoutH({}).unwrap();
-      dispatch(logout());
+      await logout({}).unwrap();
+      dispatch(logOut());
       toast.success("user logout successfully");
       setIsDropdown(false);
       window.location.reload();
     } catch (error) {
-      console.error("Logout failed:", error);
+      // console.error("Logout failed:", error);
     }
   };
 

@@ -1,4 +1,5 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi, } from "@reduxjs/toolkit/query/react";
+import { baseQueryWithErrorHandling } from "../hooks/baseQueryWithErrorHandling";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -14,14 +15,9 @@ const API_URLS = {
   DELETE_PRODUCT: (productId: string) => `${BASE_URL}/product/${productId}`,
 };
 
-const baseQuery = fetchBaseQuery({
-  baseUrl: BASE_URL,
-  credentials: "include",
-});
-
 export const productApi = createApi({
   reducerPath: "productApi",
-  baseQuery,
+  baseQuery: baseQueryWithErrorHandling,
   endpoints: (builder) => ({
     addProduct: builder.mutation({
       query: (productData) => ({

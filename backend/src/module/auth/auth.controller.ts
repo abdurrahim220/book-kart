@@ -62,8 +62,6 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
   const { token } = req.params;
 
   const { password } = req.body;
-
-  console.log(token,password)
   
   await AuthServices.resetPassword({ token, password });
 
@@ -78,7 +76,10 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
 
 const logout = catchAsync(async (req: Request, res: Response) => {
   // console.log(req)
-  await AuthServices.logout(req);
+  const refreshToken = req.cookies?.refreshToken;
+  // const { refreshToken } = req.cookies;
+  // console.log('refreshToken', refreshToken);
+  await AuthServices.logout(refreshToken);
 
   // Clear cookies
   res.setHeader('Set-Cookie', [

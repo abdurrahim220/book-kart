@@ -19,7 +19,7 @@ const loginUser = async (payload: ILoginPayload): Promise<ILoginResponse> => {
   // Check if user exists
   const user = await User.findOne({ email }).select('+password');
   if (!user) {
-    throw new ApiError('User not found', httpStatus.NOT_FOUND);
+    throw new ApiError('Invalid email', httpStatus.NOT_FOUND);
   }
 
   // Verify password
@@ -28,7 +28,7 @@ const loginUser = async (payload: ILoginPayload): Promise<ILoginResponse> => {
     user.password as string,
   );
   if (!isPasswordValid) {
-    throw new ApiError('Invalid credentials', httpStatus.UNAUTHORIZED);
+    throw new ApiError('Invalid password', httpStatus.UNAUTHORIZED);
   }
 
   // Generate tokens
@@ -52,7 +52,7 @@ const loginUser = async (payload: ILoginPayload): Promise<ILoginResponse> => {
     accessToken,
     refreshToken,
     user: {
-      _id: user._id,
+      _id: user._id.toString(),
       email: user.email,
       role: user.role,
     },
@@ -134,8 +134,9 @@ const resetPassword = async ({
   await user.save();
 };
 
-const logout = async (req: Request) => {
-  const refreshToken = req.cookies?.refreshToken;
+const logout = async (refreshToken:string) => {
+  // const refreshToken = req.cookies?.refreshToken;
+  // console.log('refreshToken', refreshToken);
 
   if (!refreshToken) {
     throw new ApiError('No token provided', httpStatus.UNAUTHORIZED);

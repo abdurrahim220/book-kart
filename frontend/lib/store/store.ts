@@ -12,7 +12,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import userReducer from "./slice/userSlice";
-import cartReducer from "./slice/cartSlice";
+import cartReducer from "./slice/cartSlicer";
 import wishListReducer from "./slice/whishListSlice";
 import { authApi } from "./features/authApi";
 import { productApi } from "./features/productApi";
