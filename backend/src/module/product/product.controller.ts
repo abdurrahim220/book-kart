@@ -54,6 +54,7 @@ const getAllProducts = catchAsync(async (req: Request, res: Response) => {
 });
 const getSingleProducts = catchAsync(async (req: Request, res: Response) => {
   const { productId } = req.params;
+  console.log(productId);
   const result = await ProductService.getSingleProducts({ productId });
   sendResponse(res, {
     statusCode: status.OK,

@@ -4,10 +4,13 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 const API_URLS = {
   CREATE_PRODUCT: `${BASE_URL}/product/create`,
-  UPDATE_PRODUCT: (productId: string) => `${BASE_URL}/product/update/${productId}`,
+  UPDATE_PRODUCT: (productId: string) =>
+    `${BASE_URL}/product/update/${productId}`,
   GET_ALL_PRODUCTS: `${BASE_URL}/product/`,
-  GET_SINGLE_PRODUCT: (productId: string) => `${BASE_URL}/product/single-product/${productId}`,
-  GET_SELLER_PRODUCTS: (sellerId: string) => `${BASE_URL}/product/seller-product/${sellerId}`,
+  GET_SINGLE_PRODUCT: (productId: string) =>
+    `${BASE_URL}/product/single-product/${productId}`,
+  GET_SELLER_PRODUCTS: (sellerId: string) =>
+    `${BASE_URL}/product/seller-product/${sellerId}`,
   DELETE_PRODUCT: (productId: string) => `${BASE_URL}/product/${productId}`,
 };
 
@@ -34,6 +37,7 @@ export const productApi = createApi({
 
     getProductById: builder.query({
       query: (id) => API_URLS.GET_SINGLE_PRODUCT(id),
+      // transformResponse: (response) => response.data,
     }),
 
     getProductBySellerId: builder.query({

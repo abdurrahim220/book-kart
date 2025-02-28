@@ -40,6 +40,7 @@ export type IOrder = {
 };
 
 export type BookDetails = {
+  _id?:string | undefined,
   title: string;
   images: (File | string)[];
   category: string;
@@ -54,8 +55,10 @@ export type BookDetails = {
   stock: number;
   rating?: number;
   reviews?: ObjectId[];
+  finalPrice?:number,
   shippingCharge: string;
   seller: ObjectId;
+  createdAt:Date
 };
 
 export type IUser = {

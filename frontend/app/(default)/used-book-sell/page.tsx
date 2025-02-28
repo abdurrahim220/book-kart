@@ -5,7 +5,6 @@ import BookForm from "@/components/pages/bookform/page";
 import WrapperContainer from "@/components/shared/WrapperContainer";
 import { BookDetails } from "@/lib/interface/types";
 import { useAddProductMutation } from "@/lib/store/features/productApi";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks/hooks";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,8 +17,6 @@ const BookSell = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]); // For raw File objects
   const [addProducts] = useAddProductMutation();
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.user);
 
   const {
     register,
@@ -38,18 +35,23 @@ const BookSell = () => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      const newFiles = Array.from(files).slice(0, 4); // Limit to 4 images
-      const newUploadImages = newFiles.map((file) => URL.createObjectURL(file)); // For preview
-      setUploadImages((prevImages) => [...prevImages, ...newUploadImages].slice(0, 4));
-      setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles].slice(0, 4)); // Store raw files
-      setValue("images", [...selectedFiles, ...newFiles].slice(0, 4)); // Update form with raw files
+      const newFiles = Array.from(files).slice(0, 4);
+      const newUploadImages = newFiles.map((file) => URL.createObjectURL(file));
+      setUploadImages((prevImages) =>
+        [...prevImages, ...newUploadImages].slice(0, 4)
+      );
+      setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles].slice(0, 4));
+      setValue("images", [...selectedFiles, ...newFiles].slice(0, 4));
     }
   };
 
   const handleRemoveImage = (index: number) => {
     setUploadImages((prevImages) => prevImages.filter((_, i) => i !== index));
     setSelectedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-    setValue("images", selectedFiles.filter((_, i) => i !== index));
+    setValue(
+      "images",
+      selectedFiles.filter((_, i) => i !== index)
+    );
   };
 
   const onSubmit = async (data: BookDetails) => {
@@ -64,10 +66,9 @@ const BookSell = () => {
         }
       });
 
-      // Append raw File objects to FormData
       if (Array.isArray(selectedFiles) && selectedFiles.length > 0) {
         selectedFiles.forEach((file) => {
-          formData.append("images", file); // Append the raw File object
+          formData.append("images", file);
         });
       }
 
@@ -77,8 +78,8 @@ const BookSell = () => {
       if (response.success) {
         toast.success(response.message);
         reset();
-        setUploadImages([]); // Clear preview images
-        setSelectedFiles([]); // Clear selected files
+        setUploadImages([]);
+        setSelectedFiles([]);
         const bookId = response.data?._id;
         if (bookId) {
           console.log("Redirecting to:", `/books/${bookId}`);
@@ -91,7 +92,9 @@ const BookSell = () => {
       }
     } catch (error: any) {
       console.error("Submission Error:", error);
-      toast.error(error.message || "An error occurred while creating the product");
+      toast.error(
+        error.message || "An error occurred while creating the product"
+      );
     }
   };
 
@@ -105,7 +108,10 @@ const BookSell = () => {
           <p className="text-gray-500 text-xl mb-4">
             Submit a free classified ad for your used book.
           </p>
-          <Link href="/how-it-works" className="flex items-center justify-center">
+          <Link
+            href="/how-it-works"
+            className="flex items-center justify-center"
+          >
             <h2 className="text-red-500 hover:underline hover:text-blue-500">
               Learn How it Works
             </h2>

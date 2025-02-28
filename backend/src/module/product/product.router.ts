@@ -23,6 +23,7 @@ router.patch(
 );
 
 router.get('/', ProductController.getAllProducts);
+
 router.get(
   '/single-product/:productId',
   auth('admin', 'seller', 'buyer'),

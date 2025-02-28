@@ -121,6 +121,7 @@ const getAllProducts = async () => {
 };
 
 const getSingleProducts = async ({ productId }: { productId: string }) => {
+  console.log(productId);
   const product = await Product.findById(productId)
     .populate('seller')
     .populate('images');
