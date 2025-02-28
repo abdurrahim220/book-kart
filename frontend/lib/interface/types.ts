@@ -1,3 +1,4 @@
+
 type ObjectId = string;
 
 export type IUserAddress = {
@@ -15,8 +16,11 @@ export type ICartItem = {
 };
 
 export type ICart = {
-  user: ObjectId;
+  _id:string,
+  user: string;
   items: ICartItem[];
+  createAt:string,
+  updatedAt:string
 };
 
 export type IOrderItem = {
@@ -76,10 +80,12 @@ export type IUser = {
 export type UserStatus = "in-progress" | "blocked" | "active";
 export type UserRole = "super-admin" | "admin" | "seller" | "buyer";
 
-export type IWishlist = {
-  user: ObjectId;
-  products: ObjectId[];
+export type IWishlistItem = {
+  _id: string;
+  products: string[];
 };
+
+
 
 export type IBackendUser = IUser & {
   password?: string;

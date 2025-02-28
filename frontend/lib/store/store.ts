@@ -4,47 +4,74 @@ import storage from "redux-persist/lib/storage";
 import {
   persistStore,
   persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
 } from "redux-persist";
 import userReducer from "./slice/userSlice";
+import cartReducer from "./slice/cartSlice";
+import wishListReducer from "./slice/whishListSlice";
 import { authApi } from "./features/authApi";
 import { productApi } from "./features/productApi";
 import { cartApi } from "./features/cartApi";
 import { wishlistApi } from "./features/wishlistApi";
 
-// Persist Config
 const userPersistConfig = {
   key: "user",
   storage,
   whitelist: ["user", "role", "isLoggedIn"],
 };
 
-// Wrap user reducer with persist config
-const persistedUserReducer = persistReducer(userPersistConfig, userReducer);
+const cartPersistConfig = {
+  key: "cart",
+  storage,
+  whitelist: ["items"],
+};
 
-// ✅ Include all reducers in the store
+const wishListPersistConfig = {
+  key: "wishlist",
+  storage,
+  whitelist: ["items"],
+};
+
+const persistedUserReducer = persistReducer(userPersistConfig, userReducer);
+const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
+const persistedWishListReducer = persistReducer(
+  wishListPersistConfig,
+  wishListReducer
+);
+
 export const store = configureStore({
   reducer: {
-    user: persistedUserReducer, // ✅ Persisted user reducer
-    [authApi.reducerPath]: authApi.reducer, // ✅ RTK Query reducers
+    user: persistedUserReducer,
+    cart: persistedCartReducer,
+    wishlist: persistedWishListReducer,
+    [authApi.reducerPath]: authApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [cartApi.reducerPath]: cartApi.reducer,
     [wishlistApi.reducerPath]: wishlistApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }).concat([
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredPaths: [],
+      },
+    }).concat([
       authApi.middleware,
       productApi.middleware,
       cartApi.middleware,
       wishlistApi.middleware,
     ]),
+  devTools: process.env.NODE_ENV !== "production",
 });
 
-// ✅ Setup RTK Query listeners
 setupListeners(store.dispatch);
 
-// ✅ Persist store
 export const persistor = persistStore(store);
 
-// ✅ Correctly define RootState
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
