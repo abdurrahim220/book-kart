@@ -1,7 +1,6 @@
-import { Types } from "mongoose"
+import { Types } from "mongoose";
 
-export type IWhishList={
-    user:Types.ObjectId;
-    products:Types.ObjectId[];
-}
-
+export type IWishList = {
+  user: Types.ObjectId;
+  products: Types.ObjectId[];
+};

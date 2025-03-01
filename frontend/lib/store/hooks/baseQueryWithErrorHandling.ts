@@ -20,7 +20,7 @@ export const baseQueryWithErrorHandling = async (
 ) => {
   const result = await baseQuery(args, api, extraOptions);
   if (result.error) {
-    console.error("API Error:", result.error);
+    // console.error("API Error:", result.error);
   }
   return result;
 };

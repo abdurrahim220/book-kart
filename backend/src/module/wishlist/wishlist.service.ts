@@ -4,6 +4,7 @@ import ApiError from '../../error/ApiError';
 import { Product } from '../product/product.model';
 
 const addToWishList = async (userId: string, productId: string) => {
+ 
   const product = await Product.findById(productId);
   if (!product) {
     throw new ApiError('Product not found', status.NOT_FOUND);
@@ -21,7 +22,7 @@ const addToWishList = async (userId: string, productId: string) => {
   if (!wishList) {
     wishList = new WishList({
       user: userId,
-      products: [],
+      products: [], // This is now redundant since the schema ensures a default empty array
     });
   }
 
@@ -36,7 +37,9 @@ const addToWishList = async (userId: string, productId: string) => {
 };
 
 const getWishList = async (userId: string) => {
-  const wishList = await WishList.findOne({ user: userId }).populate('products');
+  const wishList = await WishList.findOne({ user: userId }).populate(
+    'products',
+  );
   if (!wishList) {
     throw new ApiError('Wishlist not found', status.NOT_FOUND);
   }

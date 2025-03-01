@@ -1,4 +1,4 @@
-import { WishList } from './wishlist.model';
+
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
@@ -9,6 +9,7 @@ const addToWishList = catchAsync(async (req: Request, res: Response) => {
   const userId = req.user?._id;
 
   const { productId } = req.body;
+
 
   const result = await WhishListServices.addToWishList(userId, productId);
 

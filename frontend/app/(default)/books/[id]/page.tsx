@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import Breadcrumb from "@/components/features/Breadcrumb";
@@ -26,25 +27,21 @@ import {
   useAddToWishlistMutation,
   useRemoveFromWishlistMutation,
 } from "@/lib/store/features/wishlistApi";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks/hooks";
+import { useAppDispatch } from "@/lib/store/hooks/hooks";
 import toast from "react-hot-toast";
 import { addToCart } from "@/lib/store/slice/cartSlicer";
+import { addToWishList } from "@/lib/store/slice/whishListSlice";
 
+import ShareButton from "@/components/features/ShareButton";
 const SingleBook = () => {
   const { id } = useParams();
-  // const router = useRouter();
   const [books, setBooks] = useState<BookDetails | null>(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [isAddToCart, setIsAddToCart] = useState(false);
   const { data, isLoading } = useGetProductByIdQuery(id);
-  const { isLoggedIn, token } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-
   const [addToCartMutation] = useAddToCartMutation();
   const [addToWishListMutation] = useAddToWishlistMutation();
-  const [removeWishListMutation] = useRemoveFromWishlistMutation();
-
-  const wishList = useAppSelector((state) => state.wishlist.items);
 
   useEffect(() => {
     if (data) {
@@ -60,10 +57,6 @@ const SingleBook = () => {
 
   const singleBook = books;
 
-  // console.log("singleBook:", singleBook);
-  // console.log("books:", books);
-
-  // Early return if no book data
   if (!singleBook) {
     return (
       <WrapperContainer>
@@ -74,14 +67,9 @@ const SingleBook = () => {
     );
   }
 
-  // Placeholder functions
   const handleAddToCart = async () => {
-    console.log(token);
-
     if (books) {
       setIsAddToCart(true);
-
-      // console.log(books)
 
       try {
         const result = await addToCartMutation({
@@ -103,19 +91,28 @@ const SingleBook = () => {
       setIsAddToCart(false);
     }
   };
-  const handleAddToWishlist = (productId: string) => {
+  const handleAddToWishlist = async (productId: string) => {
+    // console.log("Adding/Removing to Wishlist", productId);
+    console.log(productId);
     try {
-      
-    } catch (error) {
-      
+      const result = await addToWishListMutation(productId).unwrap();
+      // console.log("Add Wishlist Result:", result);
+      if (result.success) {
+        dispatch(addToWishList(result.data));
+        toast.success("Added to wishlist");
+      } else {
+        toast.error(result.message || "Error adding to wishlist");
+      }
+    } catch (error: any) {
+      // console.error("Wishlist Error:", error);
+      const errorMessage = error?.data?.message || "Error updating wishlist";
+      toast.error(errorMessage);
     }
   };
-
   const bookImages = (singleBook.images || []).filter(
     (image): image is string => typeof image === "string"
   );
 
-  // Calculate discount percentage
   const calculateDiscount = (price?: number, finalPrice?: number) => {
     if (
       price === undefined ||
@@ -131,6 +128,8 @@ const SingleBook = () => {
     const date = new Date(dateString);
     return formatDistanceToNow(date, { addSuffix: true });
   };
+
+  const url = window.location.href;
 
   return (
     <section className="min-h-screen py-8 lg:py-12 bg-gray-100">
@@ -198,15 +197,19 @@ const SingleBook = () => {
                 </p>
               </div>
               <div className="flex gap-2 items-center">
-                <Button variant="outline">Share</Button>
+                <ShareButton title={singleBook?.title} url={url}/>
                 <Button
                   variant="outline"
                   onClick={() =>
                     singleBook._id && handleAddToWishlist(singleBook._id)
                   }
+                  className={`flex items-center gap-1`} // Dynamic styling based on wishlist state
                 >
-                  <Heart className="h-4 w-4 mr-1 fill-red-500" />
-                  <span className="hidden md:inline">Add</span>
+                  <>
+                    <Heart className="h-4 w-4" />{" "}
+                    {/* Empty heart for not wishlisted */}
+                    <span className="hidden md:inline">Add</span>
+                  </>
                 </Button>
               </div>
             </div>
@@ -309,9 +312,9 @@ const SingleBook = () => {
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-center gap-3">
-                    <span className="font-medium">
-                      {singleBook.seller.name}
-                    </span>
+                    {/* <span className="font-medium">
+                   {singleBook.seller.name}
+                    </span> */}
                     <Badge variant="outline" className="text-green-500">
                       <CheckCircle2 className="h-3 w-3 mr-1" />
                       Verified
@@ -319,9 +322,9 @@ const SingleBook = () => {
                   </div>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <MapPin className="h-4 w-4" />
-                    <span>
+                    {/* <span>
                       {singleBook.seller.location || "Location not provided"}
-                    </span>
+                    </span> */}
                   </div>
                 </div>
               </div>
@@ -329,7 +332,7 @@ const SingleBook = () => {
                 <div className="h-12 w-12 rounded-full bg-blue-200 flex items-center justify-center">
                   <Contact2 className="h-6 w-6 text-blue-500" />
                 </div>
-                <p>{singleBook.seller.email || "Contact not provided"}</p>
+                {/* <p>{singleBook.seller.email || "Contact not provided"}</p> */}
               </div>
             </CardContent>
           </Card>
